@@ -53,6 +53,10 @@ public class WebBc {
         return repository.findAll();
     }
 
+    public List<Object[]> listAllPokemonsWithTypeName() {
+        return repository.findAllWithTypeName();
+    }
+
     public Pokemon getRepositoryPokemonInfoByName(String name) {
         return repository.findPokemonByName(name);
     }

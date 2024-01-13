@@ -34,9 +34,16 @@ public class WebController {
         return mv;
     }
 
+    @GetMapping("/listPokemonTable")
+    public String listPokemonTable(Model model) {
+        List<Pokemon> pokemonList = bc.listAllPokemons();
+        model.addAttribute("pokemonList", pokemonList);
+        return "listPokemonTable";
+    }
+
     @GetMapping("/listAllPokemons")
     public String listAllPokemons(Model model) {
-        List<Pokemon> pokemonList = bc.listAllPokemons();
+        List<Object[]> pokemonList = bc.listAllPokemonsWithTypeName();
         model.addAttribute("pokemonList", pokemonList);
         return "listPokemons";
     }
