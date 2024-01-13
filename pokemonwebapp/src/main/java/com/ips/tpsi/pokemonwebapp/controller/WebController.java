@@ -70,14 +70,6 @@ public class WebController {
     }
 
 
-    @GetMapping("/name") // @GetMapping("/")
-    public ModelAndView getName() {
-        ModelAndView mv = new ModelAndView("index");
-        // aceder à business component > acede ao repositorio > obtem dados
-        mv.addObject("name", "Vania");
-        return mv;
-    }
-
 
     @GetMapping("/uniquePokemon")
     public ModelAndView getPokemonByName(String name) {

@@ -27,8 +27,8 @@
         <th>Speed</th>
         <th>Generation</th>
         <th>Legendary</th>
-        <th>Types</th>
-        <th>Edit</th>
+        <th></th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -45,7 +45,7 @@
         <td th:text="${pokemon.legendary}"></td>
         <td>
             <button type="button" class="btn btn-info" data-toggle="modal" th:data-target="'#pokemonModal' + ${pokemon.idPokemon}">
-                Detalhes
+                Types
             </button>
         </td>
         <td>

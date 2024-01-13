@@ -74,7 +74,6 @@ public class WebBc {
             existingPokemon.setGeneration(updatedPokemon.getGeneration());
             existingPokemon.setLegendary(updatedPokemon.getLegendary());
 
-
             repository.save(existingPokemon); // Salvar as alterações no banco de dados
         } else {
             throw new NoSuchElementException("Pokemon with ID " + id + " not found.");
