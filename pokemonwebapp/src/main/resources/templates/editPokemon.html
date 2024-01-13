@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Pokemon</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script th:if="${alertMessage}">
+        alert([[${alertMessage}]]);
+    </script>
+
+</head>
+<body>
+
+<h2>Edit Pokemon</h2>
+
+<form th:object="${pokemon}" th:action="@{/pokemon/{id}/edit(id=*{idPokemon})}" th:method="post">
+    <!-- Campos do formulário para editar o Pokemon -->
+    <label for="name">Name:</label>
+    <input type="text" id="name" th:field="*{name}" required>
+
+    <label for="hpScore">HP Score:</label>
+    <input type="text" id="hpScore" th:field="*{hpScore}" required>
+
+    <label for="attackScore">Attack Score:</label>
+    <input type="text" id="attackScore" th:field="*{attackScore}" required>
+
+    <label for="defenceScore">Defence Score:</label>
+    <input type="text" id="defenceScore" th:field="*{defenceScore}" required>
+
+    <label for="specialAttackScore">Special Attack Score:</label>
+    <input type="text" id="specialAttackScore" th:field="*{specialAttackScore}" required>
+
+    <label for="specialDefenceScore">Special Defence Score:</label>
+    <input type="text" id="specialDefenceScore" th:field="*{specialDefenceScore}" required>
+
+    <label for="speed">Speed:</label>
+    <input type="text" id="speed" th:field="*{speed}" required>
+
+    <label for="generation">Generation:</label>
+    <input type="text" id="generation" th:field="*{generation}" required>
+
+    <label for="legendary">Legendary:</label>
+    <input type="checkbox" id="legendary" th:field="*{legendary}">
+
+    <!-- Adicione outros campos conforme necessário -->
+
+    <button type="submit">Salvar</button>
+</form>
+
+
+
+</body>
+</html>

@@ -6,10 +6,14 @@ import com.ips.tpsi.pokemonwebapp.entity.Pokemon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Controller
 public class WebController {
@@ -24,18 +28,30 @@ public class WebController {
         return "listPokemons";
     }
 
-    @GetMapping("/pokemon/{id}/types")
-    public String showPokemonTypes(@PathVariable Long id, Model model) {
-        Pokemon pokemon = bc.getPokemonById(id);
+    @GetMapping("/pokemon/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Optional<Pokemon> optionalPokemon = Optional.ofNullable(bc.getPokemonById(id));
 
-        if (pokemon != null) {
-            List<Object[]> pokemonTypes = bc.getPokemonTypesById(id);
+        if (optionalPokemon.isPresent()) {
+            Pokemon pokemon = optionalPokemon.get();
             model.addAttribute("pokemon", pokemon);
-            model.addAttribute("pokemonTypes", pokemonTypes);
-            return "pokemonTypes"; // Nome da página de detalhes dos tipos
+            return "editPokemon"; // Nome da página de edição
         } else {
-            // Tratar caso o Pokémon não seja encontrado
-            return "pokemonNotFound"; // Nome da página de Pokémon não encontrado
+            // Adicionar a mensagem de alerta à model
+            model.addAttribute("alertMessage", "Pokemon with ID " + id + " not found.");
+            return "editPokemon";
+        }
+    }
+
+    @PostMapping("/pokemon/{id}/edit")
+    public String handleEditForm(@PathVariable Long id, @ModelAttribute Pokemon updatedPokemon, Model model) {
+        try {
+            bc.editPokemon(id, updatedPokemon);
+            return "redirect:/listAllPokemons";  // Redirecionar para a página de listagem após a edição
+        } catch (NoSuchElementException e) {
+            // Adicionar a mensagem de alerta à model
+            model.addAttribute("alertMessage", "Pokemon with ID " + id + " not found.");
+            return "editPokemon";
         }
     }
 

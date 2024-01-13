@@ -27,8 +27,8 @@
         <th>Speed</th>
         <th>Generation</th>
         <th>Legendary</th>
-        <th>is Active</th>
         <th>Types</th>
+        <th>Edit</th>
     </tr>
     </thead>
     <tbody>
@@ -43,12 +43,15 @@
         <td th:text="${pokemon.speed} ?: 'N/A'"></td>
         <td th:text="${pokemon.generation} ?: 'N/A'"></td>
         <td th:text="${pokemon.legendary}"></td>
-        <td th:text="${pokemon.isActive}"></td>
         <td>
             <button type="button" class="btn btn-info" data-toggle="modal" th:data-target="'#pokemonModal' + ${pokemon.idPokemon}">
                 Detalhes
             </button>
         </td>
+        <td>
+            <a th:href="@{/pokemon/{id}/edit(id=*{pokemon.idPokemon})}" class="btn btn-primary">Edit</a>
+        </td>
+
     </tr>
     </tbody>
 </table>

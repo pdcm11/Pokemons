@@ -7,10 +7,7 @@ import com.ips.tpsi.pokemonwebapp.repository.PokemonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 // a anotação Service serve para definir serviços, neste caso o nosso BC que é onde está a componente de lógica de negócio
 
@@ -60,6 +57,28 @@ public class WebBc {
 
     public Pokemon getPokemonById(Long id) {
         return repository.findPokemonByIdPokemon(id);
+    }
+    public void editPokemon(Long id, Pokemon updatedPokemon) throws NoSuchElementException {
+        Optional<Pokemon> optionalPokemon = repository.findById(id);
+
+        if (optionalPokemon.isPresent()) {
+            Pokemon existingPokemon = optionalPokemon.get();
+
+            // Atualizar os campos necessários
+            existingPokemon.setName(updatedPokemon.getName());
+            existingPokemon.setHpScore(updatedPokemon.getHpScore());
+            existingPokemon.setAttackScore(updatedPokemon.getAttackScore());
+            existingPokemon.setSpecialDefenceScore(updatedPokemon.getSpecialDefenceScore());
+            existingPokemon.setSpecialAttackScore(updatedPokemon.getSpecialAttackScore());
+            existingPokemon.setSpeed(updatedPokemon.getSpeed());
+            existingPokemon.setGeneration(updatedPokemon.getGeneration());
+            existingPokemon.setLegendary(updatedPokemon.getLegendary());
+
+
+            repository.save(existingPokemon); // Salvar as alterações no banco de dados
+        } else {
+            throw new NoSuchElementException("Pokemon with ID " + id + " not found.");
+        }
     }
 
     public List<Object[]> getPokemonTypesById(Long id) {

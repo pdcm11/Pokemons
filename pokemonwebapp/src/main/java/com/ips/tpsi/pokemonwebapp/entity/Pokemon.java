@@ -60,4 +60,6 @@ public class Pokemon {
     public void setTypes(List<Pokemon_Type> types) {
         this.types = types;
     }
+
+
 }
