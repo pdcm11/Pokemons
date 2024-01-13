@@ -6,6 +6,7 @@ import com.ips.tpsi.pokemonwebapp.entity.Pokemon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -16,8 +17,26 @@ public class WebController {
     @Autowired
     WebBc bc;
 
-    public WebController(WebBc bc) {
-        this.bc = bc;
+    @GetMapping("/listAllPokemons")
+    public String listAllPokemons(Model model) {
+        List<Pokemon> pokemonList = bc.listAllPokemons();
+        model.addAttribute("pokemonList", pokemonList);
+        return "listPokemons";
+    }
+
+    @GetMapping("/pokemon/{id}/types")
+    public String showPokemonTypes(@PathVariable Long id, Model model) {
+        Pokemon pokemon = bc.getPokemonById(id);
+
+        if (pokemon != null) {
+            List<Object[]> pokemonTypes = bc.getPokemonTypesById(id);
+            model.addAttribute("pokemon", pokemon);
+            model.addAttribute("pokemonTypes", pokemonTypes);
+            return "pokemonTypes"; // Nome da página de detalhes dos tipos
+        } else {
+            // Tratar caso o Pokémon não seja encontrado
+            return "pokemonNotFound"; // Nome da página de Pokémon não encontrado
+        }
     }
 
     @GetMapping("/home") // @GetMapping("/")
@@ -34,19 +53,6 @@ public class WebController {
         return mv;
     }
 
-    @GetMapping("/listPokemonTable")
-    public String listPokemonTable(Model model) {
-        List<Pokemon> pokemonList = bc.listAllPokemons();
-        model.addAttribute("pokemonList", pokemonList);
-        return "listPokemonTable";
-    }
-
-    @GetMapping("/listAllPokemons")
-    public String listAllPokemons(Model model) {
-        List<Object[]> pokemonList = bc.listAllPokemonsWithTypeName();
-        model.addAttribute("pokemonList", pokemonList);
-        return "listPokemons";
-    }
 
     @GetMapping("/name") // @GetMapping("/")
     public ModelAndView getName() {
@@ -57,7 +63,6 @@ public class WebController {
     }
 
 
-
     @GetMapping("/uniquePokemon")
     public ModelAndView getPokemonByName(String name) {
         Pokemon pokemon = bc.getRepositoryPokemonInfoByName(name);
@@ -65,5 +70,7 @@ public class WebController {
         mv.addObject("pokemon", pokemon);
         return mv;
     }
+
+
 
 }

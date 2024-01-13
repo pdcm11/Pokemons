@@ -1,13 +1,12 @@
 package com.ips.tpsi.pokemonwebapp.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "pokemon")
@@ -19,7 +18,7 @@ public class Pokemon {
 
     @Id
     @Column(name = "id_pokemon")
-    private Integer idPokemon;
+    private Long idPokemon;
 
     @Column(name = "number")
     private Integer number;
@@ -27,19 +26,19 @@ public class Pokemon {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "hpScore")
+    @Column(name = "hp_score")
     private Integer hpScore;
 
-    @Column(name = "attackScore")
+    @Column(name = "attack_score")
     private Integer attackScore;
 
-    @Column(name = "defenceScore")
+    @Column(name = "defence_score")
     private Integer defenceScore;
 
-    @Column(name = "specialAttackScore")
+    @Column(name = "special_attack_score")
     private Integer specialAttackScore;
 
-    @Column(name = "specialDefenceScore")
+    @Column(name = "special_defence_score")
     private Integer specialDefenceScore;
 
     @Column(name = "speed")
@@ -51,6 +50,14 @@ public class Pokemon {
     @Column(name = "legendary")
     private Boolean legendary;
 
-    @Column(name = "isActive")
+    @Column(name = "is_active")
     private Boolean isActive;
+
+    @OneToMany(mappedBy = "pokemon", cascade = CascadeType.ALL)
+    private List<Pokemon_Type> types;
+
+
+    public void setTypes(List<Pokemon_Type> types) {
+        this.types = types;
+    }
 }

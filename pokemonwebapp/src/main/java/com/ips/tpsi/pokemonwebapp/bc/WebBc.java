@@ -1,11 +1,16 @@
 package com.ips.tpsi.pokemonwebapp.bc;
 
 import com.ips.tpsi.pokemonwebapp.entity.Pokemon;
+import com.ips.tpsi.pokemonwebapp.entity.Pokemon_Type;
+import com.ips.tpsi.pokemonwebapp.entity.Type;
 import com.ips.tpsi.pokemonwebapp.repository.PokemonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // a anotação Service serve para definir serviços, neste caso o nosso BC que é onde está a componente de lógica de negócio
 
@@ -26,7 +31,7 @@ public class WebBc {
             Integer generation,
             Boolean legendary,
             Boolean isActive
-            ) {
+    ) {
         List<Pokemon> pokemonList = repository.findAll(); // select * from pokemon;
 
         // método 1 - construir o objeto
@@ -53,8 +58,12 @@ public class WebBc {
         return repository.findAll();
     }
 
-    public List<Object[]> listAllPokemonsWithTypeName() {
-        return repository.findAllWithTypeName();
+    public Pokemon getPokemonById(Long id) {
+        return repository.findPokemonByIdPokemon(id);
+    }
+
+    public List<Object[]> getPokemonTypesById(Long id) {
+        return repository.findPokemonTypesById(id);
     }
 
     public Pokemon getRepositoryPokemonInfoByName(String name) {

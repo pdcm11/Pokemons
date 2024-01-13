@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Listagem de Pokémons</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,27 +26,58 @@
         <th>Special Defence Score</th>
         <th>Speed</th>
         <th>Generation</th>
-        <th>Legendary (Y/N)</th>
-        <th>is Active (Y/N)</th>
+        <th>Legendary</th>
+        <th>is Active</th>
+        <th>Types</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="pokemon : ${pokemonList}">
-        <td th:text=" ${pokemon.number} ?: 'N/A' "></td>
-        <td th:text=" ${pokemon.name} ?: 'N/A' "></td>
-        <td th:text=" ${pokemon.hpScore} ?: 'N/A' "></td>
-        <td th:text=" ${pokemon.attackScore} ?: 'N/A' "></td>
-        <td th:text=" ${pokemon.defenceScore} ?: 'N/A' "></td>
-        <td th:text=" ${pokemon.specialAttackScore} ?: 'N/A' "></td>
-        <td th:text=" ${pokemon.specialDefenceScore} ?: 'N/A' "></td>
-        <td th:text=" ${pokemon.speed} ?: 'N/A' "></td>
-        <td th:text=" ${pokemon.generation} ?: 'N/A' "></td>
-        <td th:text=" ${pokemon.legendary} "></td>
-        <td th:text=" ${pokemon.isActive}"></td>
-        <td th:text="${pokemonInfo[2]}"></td>
-        <!-- ?: 'N/A' não se justifica nos boolean's-->
+        <td th:text="${pokemon.number} ?: 'N/A'"></td>
+        <td th:text="${pokemon.name} ?: 'N/A'"></td>
+        <td th:text="${pokemon.hpScore} ?: 'N/A'"></td>
+        <td th:text="${pokemon.attackScore} ?: 'N/A'"></td>
+        <td th:text="${pokemon.defenceScore} ?: 'N/A'"></td>
+        <td th:text="${pokemon.specialAttackScore} ?: 'N/A'"></td>
+        <td th:text="${pokemon.specialDefenceScore} ?: 'N/A'"></td>
+        <td th:text="${pokemon.speed} ?: 'N/A'"></td>
+        <td th:text="${pokemon.generation} ?: 'N/A'"></td>
+        <td th:text="${pokemon.legendary}"></td>
+        <td th:text="${pokemon.isActive}"></td>
+        <td>
+            <button type="button" class="btn btn-info" data-toggle="modal" th:data-target="'#pokemonModal' + ${pokemon.idPokemon}">
+                Detalhes
+            </button>
+        </td>
     </tr>
     </tbody>
 </table>
+
+<div th:each="pokemon : ${pokemonList}" th:id="'pokemonModal' + ${pokemon.idPokemon}" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Pokémon Details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p th:text="'Number: ' + ${pokemon.number}"></p>
+                <p th:text="'Name: ' + ${pokemon.name}"></p>
+
+                <!-- Mostrar tipos associados -->
+                <h3>Types:</h3>
+                <ul>
+                    <li th:each="typeInfo : ${pokemon.types}">
+                        <span th:text="${typeInfo.type.name}"></span> <!-- Nome do tipo -->
+                        <span th:if="${!#strings.isEmpty(typeInfo.pokemonTypeLevel)}"> (Level: <span th:text="${typeInfo.pokemonTypeLevel}"></span>)</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
