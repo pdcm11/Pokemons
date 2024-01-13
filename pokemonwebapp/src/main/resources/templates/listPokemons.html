@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listagem de Pokémons</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Pokemons List By Grupo Maravilha</h1>
+<!--<a th:href="@{http://localhost:8080/}">Voltar à página</a> -->
+
+<button th:onclick="window.location.href='http://localhost:8080/home'">Voltar à página</button>
+<table>
+    <thead>
+    <tr>
+        <th>Number</th>
+        <th>Name</th>
+        <th>HP Score</th>
+        <th>Attack Score</th>
+        <th>Defence Score</th>
+        <th>Special Attack Score</th>
+        <th>Special Defence Score</th>
+        <th>Speed</th>
+        <th>Generation</th>
+        <th>Legendary (Y/N)</th>
+        <th>is Active (Y/N)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="pokemon : ${pokemonList}">
+        <td th:text=" ${pokemon.number} ?: 'N/A' "></td>
+        <td th:text=" ${pokemon.name} ?: 'N/A' "></td>
+        <td th:text=" ${pokemon.hpScore} ?: 'N/A' "></td>
+        <td th:text=" ${pokemon.attackScore} ?: 'N/A' "></td>
+        <td th:text=" ${pokemon.defenceScore} ?: 'N/A' "></td>
+        <td th:text=" ${pokemon.specialAttackScore} ?: 'N/A' "></td>
+        <td th:text=" ${pokemon.specialDefenceScore} ?: 'N/A' "></td>
+        <td th:text=" ${pokemon.speed} ?: 'N/A' "></td>
+        <td th:text=" ${pokemon.generation} ?: 'N/A' "></td>
+        <td th:text=" ${pokemon.legendary} "></td>
+        <td th:text=" ${pokemon.isActive}"></td>
+        <!-- ?: 'N/A' não se justifica nos boolean's-->
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

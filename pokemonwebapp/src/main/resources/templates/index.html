@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>PokemonApp</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>PokemonApp</h1>
+
+<div>
+    <button th:onclick="window.location.href='/listAllPokemons'">Pokemon List</button>
+    <button th:href="@{/listAllPokemons}">Search Pokemon</button>
+    <button th:onclick="window.location.href='http://localhost:8080/aboutUs'">About Us</button>
+</div>
+</body>
+</html>
