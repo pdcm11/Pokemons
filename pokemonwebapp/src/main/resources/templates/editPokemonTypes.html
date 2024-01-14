@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- Adicione as importações necessárias, incluindo Bootstrap se necessário -->
+</head>
+<body>
+<h2>Edit Pokemon Types</h2>
+
+<!-- Exibir informações do Pokémon -->
+<h3>Pokemon Information:</h3>
+<p>ID: <span th:text="${pokemon.id}"></span></p>
+<p>Name: <span th:text="${pokemon.name}"></span></p>
+
+<!-- Formulário para editar tipos do Pokémon -->
+<form th:object="${pokemon}" th:action="@{/pokemon/{id}/edit/types}" th:method="post">
+  <h3>Edit Types:</h3>
+
+  <!-- Lista de todos os tipos disponíveis -->
+  <label for="allTypes">All Types:</label>
+  <select id="allTypes" name="allTypes" multiple="multiple" th:field="*{selectedTypeIds}">
+    <option th:each="type : ${allTypes}" th:value="${type.id}" th:text="${type.name}"></option>
+  </select>
+
+  <!-- Lista de tipos atualmente associados ao Pokémon -->
+  <label for="pokemonTypes">Pokemon Types:</label>
+  <select id="pokemonTypes" name="pokemonTypes" multiple="multiple" th:field="*{selectedTypeIds}">
+    <option th:each="type : ${pokemonTypes}" th:value="${type.id}" th:text="${type.name}"></option>
+  </select>
+
+  <!-- Adicione um botão de envio para salvar as alterações -->
+  <button class="btn btn-success" type="submit">Save Types</button>
+</form>
+
+<!-- Adicione qualquer estilo ou script necessário para esta página -->
+</body>
+</html>
+
+

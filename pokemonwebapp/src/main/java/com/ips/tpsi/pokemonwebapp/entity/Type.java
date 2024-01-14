@@ -22,4 +22,8 @@ public class Type {
     private Integer idType;
     @Column(name = "name")
     private String name;
+
+    public Integer getId() {
+        return idType;
+    }
 }

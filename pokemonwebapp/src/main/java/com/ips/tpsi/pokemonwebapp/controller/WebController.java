@@ -1,5 +1,5 @@
 package com.ips.tpsi.pokemonwebapp.controller;
-
+import com.ips.tpsi.pokemonwebapp.entity.Type;
 import org.springframework.ui.Model;
 import com.ips.tpsi.pokemonwebapp.bc.WebBc;
 import com.ips.tpsi.pokemonwebapp.entity.Pokemon;
@@ -14,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class WebController {
@@ -69,14 +71,41 @@ public class WebController {
         return mv;
     }
 
-
-
     @GetMapping("/uniquePokemon")
     public ModelAndView getPokemonByName(String name) {
         Pokemon pokemon = bc.getRepositoryPokemonInfoByName(name);
         ModelAndView mv = new ModelAndView("index");
         mv.addObject("pokemon", pokemon);
         return mv;
+    }
+
+    @GetMapping("/pokemon/{id}/edit/types")
+    public String editPokemonTypes(@PathVariable Long id, Model model) {
+        try {
+            // Obter a lista de todos os tipos disponíveis
+            List<Type> allTypes = bc.getAllTypes();
+
+            // Obter a lista de tipos associados ao Pokémon
+            List<Type> pokemonTypes = bc.getPokemonType(id);
+
+            // Preencher os IDs dos tipos associados ao Pokémon
+            Set<Long> selectedTypeIds = pokemonTypes.stream()
+                    .map(Type::getId)
+                    .map(Integer::longValue) // Converter Integer para Long
+                    .collect(Collectors.toSet());
+
+            // Adicionar atributos ao modelo
+            model.addAttribute("allTypes", allTypes);
+            model.addAttribute("pokemonTypes", pokemonTypes);
+            model.addAttribute("selectedTypeIds", selectedTypeIds);
+
+            return "editPokemonTypes";  // Nome da página de edição de tipos
+        } catch (Exception e) {
+            // Log do erro ou tratamento adequado
+            e.printStackTrace();
+            model.addAttribute("error", "Erro ao editar tipos de Pokémon.");
+            return "errorPage";  // Página de erro personalizada
+        }
     }
 
 

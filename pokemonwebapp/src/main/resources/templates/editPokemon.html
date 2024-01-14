@@ -17,10 +17,8 @@
 <link rel="stylesheet" th:href="@{/static/edit.css}"/>
 <h2>Edit Pokemon</h2>
 <br>
-<button class="btn btn-info" th:onclick="window.location.href='/pokemon/{id}/edit/types(id=*{idPokemon})'">Edit Types</button>
 
-
-
+<button class="btn btn-primary" th:onclick="|window.location.href='/pokemon/${id}/edit/types'|">Edit Types</button>
 <!-- <button type="submit" class="btn btn-Success">Salvar</button> -->
 
 <form th:object="${pokemon}" th:action="@{/pokemon/{id}/edit(id=*{idPokemon})}" th:method="post">
@@ -52,7 +50,12 @@
     <label for="legendary">Legendary:</label>
     <input type="checkbox" id="legendary" th:field="*{legendary}">
 
-    <!-- Adicione outros campos conforme necessário -->
+    <!-- alteração editar types -->
+    <label for="types">Types:</label>
+    <select id="types" multiple="multiple" th:field="*{types}">
+        <option th:each="type : ${allTypes}" th:value="${type.id}" th:text="${type.name}"></option>
+    </select>
+    <!-- alteração editar types -->
 
     <button class="btn btn-secondary" th:onclick="window.location.href='http://localhost:8080/listPokemons'">Voltar à página</button>
     <button class="btn btn-success" type="submit">Salvar</button>
