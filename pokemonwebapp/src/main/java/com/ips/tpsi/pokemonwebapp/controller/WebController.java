@@ -80,7 +80,7 @@ public class WebController {
     }
 
     @GetMapping("/pokemon/{id}/edit/types")
-    public String editPokemonTypes(@PathVariable Long id, Model model) {
+    public String handleEditTypesForm(@PathVariable Long id, @ModelAttribute Pokemon updatedPokemon, Model model) {
         try {
             // Obter a lista de todos os tipos disponíveis
             List<Type> allTypes = bc.getAllTypes();
@@ -99,7 +99,8 @@ public class WebController {
             model.addAttribute("pokemonTypes", pokemonTypes);
             model.addAttribute("selectedTypeIds", selectedTypeIds);
 
-            return "editPokemonTypes";  // Nome da página de edição de tipos
+            return "editPokemonTypes";
+
         } catch (Exception e) {
             // Log do erro ou tratamento adequado
             e.printStackTrace();
@@ -107,6 +108,7 @@ public class WebController {
             return "errorPage";  // Página de erro personalizada
         }
     }
+
 
 
 

@@ -56,6 +56,8 @@ public class Pokemon {
     @OneToMany(mappedBy = "pokemon", cascade = CascadeType.ALL)
     private List<Pokemon_Type> types;
 
+    @Transient
+    private List<Long> selectedTypeIds;
 
     public void setTypes(List<Pokemon_Type> types) {
         this.types = types;
