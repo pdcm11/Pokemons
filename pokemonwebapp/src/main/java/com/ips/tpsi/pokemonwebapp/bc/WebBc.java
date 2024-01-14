@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 // a anotação Service serve para definir serviços, neste caso o nosso BC que é onde está a componente de lógica de negócio
 
 @Service
@@ -59,13 +60,24 @@ public class WebBc {
     }
     public List<Pokemon> listActivePokemons() {
         return repository.findAll().stream()
-                .filter(Pokemon::getIsActive) // Filtra apenas os Pokémon com isActive = true
+                .filter(Pokemon::getIsActive)
                 .collect(Collectors.toList());
     }
 
+    public List<Pokemon> getDisabledPokemons() {
+        return repository.findAll().stream()
+                .filter(pokemon -> !pokemon.getIsActive())
+                .collect(Collectors.toList());
+    }
+    public List<Pokemon> listDisablePokemons() {
+        return repository.findAll().stream()
+                .filter(pokemon -> !pokemon.getIsActive())
+                .collect(Collectors.toList());
+    }
     public List<Pokemon> listAllPokemons() {
         return listActivePokemons();
     }
+
 
     public Pokemon getPokemonById(Long id) {
         return repository.findPokemonByIdPokemon(id);
@@ -112,6 +124,17 @@ public class WebBc {
         }
     }
 
+    public void activatePokemon(Long id) {
+        Optional<Pokemon> optionalPokemon = repository.findById(id);
+
+        if (optionalPokemon.isPresent()) {
+            Pokemon pokemon = optionalPokemon.get();
+            pokemon.setIsActive(true);
+            repository.save(pokemon);
+        } else {
+            throw new NoSuchElementException("Pokemon with ID " + id + " not found.");
+        }
+    }
     public Pokemon getRepositoryPokemonInfoByName(String name) {
         return repository.findPokemonByName(name);
     }

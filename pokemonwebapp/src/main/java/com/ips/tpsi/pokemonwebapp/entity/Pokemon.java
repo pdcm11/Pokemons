@@ -18,7 +18,7 @@ public class Pokemon {
 
     @Id
     @Column(name = "id_pokemon")
-    private Long idPokemon;
+    private Integer idPokemon;
 
     @Column(name = "number")
     private Integer number;
@@ -59,9 +59,6 @@ public class Pokemon {
     @Transient
     private List<Long> selectedTypeIds;
 
-    public void setTypes(List<Pokemon_Type> types) {
-        this.types = types;
-    }
 
 
 }

@@ -27,6 +27,7 @@ public class WebController {
         return "listPokemons";
     }
 
+
     @GetMapping("/pokemon/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
         Optional<Pokemon> optionalPokemon = Optional.ofNullable(bc.getPokemonById(id));
@@ -95,18 +96,26 @@ public class WebController {
         }
     }
 
+    @PostMapping("/pokemon/{id}/activate")
+    public String activatePokemon(@PathVariable Long id, Model model) {
+        try {
+            bc.activatePokemon(id);
+            return "redirect:/listDisablePokemons";
+        } catch (NoSuchElementException e) {
+            model.addAttribute("alertMessage", "Pokemon with ID " + id + " not found.");
+            return "redirect:/listDisablePokemons";
+        }
+    }
+
     @GetMapping("/search")
     public String searchPokemonByName(@RequestParam(name = "searchName", required = false) String searchName, Model model) {
         List<Pokemon> searchResults;
 
         if (searchName != null && !searchName.isEmpty()) {
-            // Se um nome de pesquisa for fornecido, filtre os Pokémon pelo nome
             searchResults = bc.searchPokemonByName(searchName);
         } else {
-            // Caso contrário, obtenha todos os Pokémon ativos
             searchResults = bc.listActivePokemons();
         }
-
         model.addAttribute("pokemonList", searchResults);
         return "listPokemons";
     }
@@ -115,8 +124,6 @@ public class WebController {
     @GetMapping("/home") // @GetMapping("/")
     public ModelAndView getHome() {
         ModelAndView mv = new ModelAndView("index");
-        // aceder à business component > acede ao repositorio > obtem dados
-
         return mv;
     }
 
@@ -132,6 +139,15 @@ public class WebController {
         ModelAndView mv = new ModelAndView("index");
         mv.addObject("pokemon", pokemon);
         return mv;
+    }
+
+    @GetMapping("/listDisablePokemons")
+    public String listDisablePokemons(Model model) {
+        // Lógica para obter a lista de Pokémon desativados e adicioná-la ao modelo
+        List<Pokemon> disabledPokemons = bc.getDisabledPokemons();
+        model.addAttribute("disabledPokemons", disabledPokemons);
+
+        return "listDisablePokemons";
     }
 
 }

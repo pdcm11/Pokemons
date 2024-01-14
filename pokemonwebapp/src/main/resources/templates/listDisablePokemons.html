@@ -63,9 +63,9 @@
             <a th:href="@{/pokemon/{id}/edit(id=*{pokemon.idPokemon})}" class="btn btn-primary">Edit</a>
         </td>
         <td>
-            <form th:action="@{/pokemon/{id}/deactivate(id=${pokemon.idPokemon})}" method="post">
-                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to deactivate this Pokemon?')">
-                    Deactivate
+            <form th:action="@{/pokemon/{id}/activate(id=${pokemon.idPokemon})}" method="post">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to activate this Pokemon?')">
+                    Activate
                 </button>
             </form>
         </td>
@@ -89,13 +89,13 @@
                 <h3>Types:</h3>
                 <ul>
                     <li th:each="typeInfo : ${pokemon.types}">
-                        <span th:text="${typeInfo.type.name}"></span> <!-- Nome do tipo -->
+                        <span th:text="${typeInfo.type.name}"></span>
                         <span th:if="${!#strings.isEmpty(typeInfo.pokemonTypeLevel)}"> (Level: <span th:text="${typeInfo.pokemonTypeLevel}"></span>)</span>
                     </li>
                 </ul>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
