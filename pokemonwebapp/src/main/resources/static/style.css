@@ -25,8 +25,8 @@ tr:hover {
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
+    margin: 20px;
+    padding: 20px;
 }
 
 .container {
@@ -49,10 +49,9 @@ label {
 }
 
 input {
-    width: 100%;
+    width: 30%;
     padding: 8px;
     margin-top: 5px;
-    box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
@@ -71,3 +70,15 @@ button:hover {
     background-color: #45a049;
 }
 
+#image{
+    align-content: center;
+}
+h1 {
+    text-align: center;
+}
+pre {
+    font-size: large;
+    font-family: Arial, sans-serif;
+    font-style: inherit;
+    text-align: center;
+}

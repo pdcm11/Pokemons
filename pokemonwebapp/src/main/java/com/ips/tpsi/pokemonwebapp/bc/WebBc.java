@@ -96,6 +96,10 @@ public class WebBc {
         return repository.findPokemonTypesById(id);
     }
 
+    public List<Pokemon> searchPokemonByName(String name) {
+        return repository.findPokemonByNameContainingIgnoreCase(name);
+    }
+
     public void deactivatePokemon(Long id) {
         Optional<Pokemon> optionalPokemon = repository.findById(id);
 

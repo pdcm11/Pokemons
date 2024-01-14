@@ -5,10 +5,7 @@ import com.ips.tpsi.pokemonwebapp.bc.WebBc;
 import com.ips.tpsi.pokemonwebapp.entity.Pokemon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -57,40 +54,6 @@ public class WebController {
         }
     }
 
-    @PostMapping("/pokemon/{id}/deactivate")
-    public String deactivatePokemon(@PathVariable Long id, Model model) {
-        try {
-            bc.deactivatePokemon(id);
-            return "redirect:/listAllPokemons"; // Redireciona para a lista após a desativação
-        } catch (NoSuchElementException e) {
-            model.addAttribute("alertMessage", "Pokemon with ID " + id + " not found.");
-            return "listPokemons";
-        }
-    }
-
-
-    @GetMapping("/home") // @GetMapping("/")
-    public ModelAndView getHome() {
-        ModelAndView mv = new ModelAndView("index");
-        // aceder à business component > acede ao repositorio > obtem dados
-
-        return mv;
-    }
-
-    @GetMapping("/aboutUs") // @GetMapping("/")
-    public ModelAndView getAboutUs() {
-        ModelAndView mv = new ModelAndView("aboutUs");
-        return mv;
-    }
-
-    @GetMapping("/uniquePokemon")
-    public ModelAndView getPokemonByName(String name) {
-        Pokemon pokemon = bc.getRepositoryPokemonInfoByName(name);
-        ModelAndView mv = new ModelAndView("index");
-        mv.addObject("pokemon", pokemon);
-        return mv;
-    }
-
     @GetMapping("/pokemon/{id}/edit/types")
     public String handleEditTypesForm(@PathVariable Long id, @ModelAttribute Pokemon updatedPokemon, Model model) {
         try {
@@ -117,11 +80,58 @@ public class WebController {
             // Log do erro ou tratamento adequado
             e.printStackTrace();
             model.addAttribute("error", "Erro ao editar tipos de Pokémon.");
-            return "errorPage";  // Página de erro personalizada
+            return "errorPage";
         }
     }
 
+    @PostMapping("/pokemon/{id}/deactivate")
+    public String deactivatePokemon(@PathVariable Long id, Model model) {
+        try {
+            bc.deactivatePokemon(id);
+            return "redirect:/listAllPokemons"; // Redireciona para a lista após a desativação
+        } catch (NoSuchElementException e) {
+            model.addAttribute("alertMessage", "Pokemon with ID " + id + " not found.");
+            return "listPokemons";
+        }
+    }
+
+    @GetMapping("/search")
+    public String searchPokemonByName(@RequestParam(name = "searchName", required = false) String searchName, Model model) {
+        List<Pokemon> searchResults;
+
+        if (searchName != null && !searchName.isEmpty()) {
+            // Se um nome de pesquisa for fornecido, filtre os Pokémon pelo nome
+            searchResults = bc.searchPokemonByName(searchName);
+        } else {
+            // Caso contrário, obtenha todos os Pokémon ativos
+            searchResults = bc.listActivePokemons();
+        }
+
+        model.addAttribute("pokemonList", searchResults);
+        return "listPokemons";
+    }
 
 
+    @GetMapping("/home") // @GetMapping("/")
+    public ModelAndView getHome() {
+        ModelAndView mv = new ModelAndView("index");
+        // aceder à business component > acede ao repositorio > obtem dados
+
+        return mv;
+    }
+
+    @GetMapping("/aboutUs") // @GetMapping("/")
+    public ModelAndView getAboutUs() {
+        ModelAndView mv = new ModelAndView("aboutUs");
+        return mv;
+    }
+
+    @GetMapping("/uniquePokemon")
+    public ModelAndView getPokemonByName(String name) {
+        Pokemon pokemon = bc.getRepositoryPokemonInfoByName(name);
+        ModelAndView mv = new ModelAndView("index");
+        mv.addObject("pokemon", pokemon);
+        return mv;
+    }
 
 }

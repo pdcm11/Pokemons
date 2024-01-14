@@ -6,16 +6,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>PokemonApp</h1>
+<h1><b>PokemonApp</b></h1>
 
-<div>
-    <button th:onclick="window.location.href='/listAllPokemons'">Pokemon List</button>
-    <button th:href="@{/listAllPokemons}">Search Pokemon</button>
+<div id="botoesIndex">
+    <button th:onclick="window.location.href='/listAllPokemons'">Pokemons</button>
     <button th:onclick="window.location.href='http://localhost:8080/aboutUs'">About Us</button>
 </div>
 
 
-<div>
+<div id="image">
     <img src="/img/pokemon-banner_1.png" alt="Pokemon World">
 </div>
 </body>

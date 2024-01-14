@@ -9,7 +9,6 @@
 <body>
 <h2>Edit Pokemon Types</h2>
 
-<!-- Exibir informações do Pokémon -->
 <h3>Pokemon Information:</h3>
 <p>ID: <span th:text="${pokemon.idPokemon}"></span></p>
 <p>Name: <span th:text="${pokemon.name}"></span></p>
@@ -25,17 +24,15 @@
     <option th:each="type : ${allTypes}" th:value="${type.idType}" th:text="${type.name}"></option>
   </select>
 
-  <!-- Lista de tipos atualmente associados ao Pokémon -->
+  <!-- Lista de tipos associados a um Pokemon -->
   <label for="pokemonTypes">Pokemon Types:</label>
   <select id="pokemonTypes" name="pokemonTypes" multiple="multiple" th:field="*{selectedTypeIds}">
     <option th:each="type : ${pokemonTypes}" th:value="${type.idType}" th:text="${type.name}"></option>
   </select>
 
-  <!-- Adicione um botão de envio para salvar as alterações -->
-  <button class="btn btn-success" type="submit">Save Types</button>
+  <button class="btn btn-success" type="submit">Save</button>
 </form>
 
-<!-- Adicione qualquer estilo ou script necessário para esta página -->
 </body>
 </html>
 

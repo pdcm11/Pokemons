@@ -7,20 +7,17 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" th:href="@{/static/edit.css}"/>
+    <link rel="stylesheet" href="/edit.css"/>
     <script th:if="${alertMessage}">
         alert([[${alertMessage}]]);
     </script>
 
 </head>
 <body>
-<link rel="stylesheet" th:href="@{/static/edit.css}"/>
-<h2>Edit Pokemon</h2>
-<br>
-
-<button class="btn btn-primary" th:onclick="|window.location.href='/pokemon/${id}/edit/types'|">Edit Types</button>
-<!-- <button type="submit" class="btn btn-Success">Salvar</button> -->
-
+<div class="title-container">
+    <h1><b>Edit Pokemon</b></h1>
+</div>
+<div class="formDiv">
 <form th:object="${pokemon}" th:action="@{/pokemon/{id}/edit(id=*{idPokemon})}" th:method="post">
     <!-- Campos do formulário para editar o Pokemon -->
     <label for="name">Name:</label>
@@ -50,86 +47,19 @@
     <label for="legendary">Legendary:</label>
     <input type="checkbox" id="legendary" th:field="*{legendary}">
 
-    <!-- alteração editar types -->
+    <!-- alteração editar types
     <label for="types">Types:</label>
     <select id="types" multiple="multiple" th:field="*{types}">
         <option th:each="type : ${allTypes}" th:value="${type.id}" th:text="${type.name}"></option>
     </select>
-    <!-- alteração editar types -->
+    alteração editar types -->
 
-    <button class="btn btn-secondary" th:onclick="window.location.href='http://localhost:8080/listPokemons'">-> Lista Pokemons</button>
-    <button class="btn btn-success" type="submit">Salvar</button>
+    <button class="btn btn-primary" th:onclick="|window.location.href='/pokemon/${id}/edit/types'|">Edit Types</button>
+    <button  class="btn btn-secondary" th:onclick="window.location.href='http://localhost:8080/listPokemons'">Cancel</button>
+    <button  class="btn btn-success" type="submit">Save</button>
 
 </form>
-
-<style>
-
-
-body {
-font-family: Arial, sans-serif;
-background-color: #f4f4f4;
-    justify-content: center;
-    align-items: center;
-margin: 0;
-height: 100vh;
-    display: flex;
-}
-
-form {
-    width: 50%;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-h2{
-    text-align: center;
-    display: flex;
-    padding: 25px;
-}
-.container {
-max-width: 800px;
-margin: 20px auto;
-background-color: #fff;
-padding: 20px;
-border-radius: 8px;
-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.form-group {
-margin-bottom: 20px;
-}
-
-label {
-display: block;
-font-weight: bold;
-margin-bottom: 5px;
-}
-
-input {
-width: 100%;
-padding: 8px;
-margin-top: 5px;
-box-sizing: border-box;
-border: 1px solid #ccc;
-border-radius: 4px;
-}
-
-button {
-background-color: #4caf50;
-color: #fff;
-padding: 10px 15px;
-border: none;
-border-radius: 4px;
-cursor: pointer;
-font-size: 16px;
-}
-
-button:hover {
-background-color: #45a049;
-}
-</style>
+</div>
 </body>
 
 </html>

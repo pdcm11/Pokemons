@@ -27,6 +27,7 @@ public interface PokemonRepository extends JpaRepository<Pokemon, Long> {
     @Query("SELECT pt.type FROM Pokemon_Type pt WHERE pt.pokemon.idPokemon = :pokemonId")
     List<Type> findTypesByPokemonId(@Param("pokemonId") Long pokemonId);
 
+    List<Pokemon> findPokemonByNameContainingIgnoreCase(String name);
 
     @Query("SELECT t FROM Type t")
     List<Type> findAllTypes();

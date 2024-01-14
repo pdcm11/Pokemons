@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Listagem de Pokémons</title>
+    <title>Pokemons List</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -10,10 +10,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Pokemons List By Grupo Maravilha</h1>
-<!--<a th:href="@{http://localhost:8080/}">Voltar à página</a> -->
+<h1><b>Pokemon List</b></h1>
 
-<button th:onclick="window.location.href='http://localhost:8080/home'">Home</button>
+<form th:action="@{/search}" method="get">
+    <div id="botoesIndex" style="text-align: left; margin-bottom: 20px;">
+        <button class="btn btn-dark" onclick="window.location.href='http://localhost:8080/home'">Home</button>
+        <button type="submit" class="btn btn-primary">Search</button>
+        <input type="text" name="searchName" placeholder="Search by name...">
+    </div>
+</form>
 <table>
     <thead>
     <tr>
