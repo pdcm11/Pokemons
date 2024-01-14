@@ -88,7 +88,6 @@ public class WebBc {
         if (optionalPokemon.isPresent()) {
             Pokemon existingPokemon = optionalPokemon.get();
 
-            // Atualizar os campos necessários
             existingPokemon.setName(updatedPokemon.getName());
             existingPokemon.setHpScore(updatedPokemon.getHpScore());
             existingPokemon.setAttackScore(updatedPokemon.getAttackScore());
@@ -107,7 +106,9 @@ public class WebBc {
     public List<Object[]> getPokemonTypesById(Long id) {
         return repository.findPokemonTypesById(id);
     }
-
+    List<Type> findPokemonTypesById(Long id) {
+        return null;
+    }
     public List<Pokemon> searchPokemonByName(String name) {
         return repository.findPokemonByNameContainingIgnoreCase(name);
     }
@@ -143,9 +144,6 @@ public class WebBc {
         return repository.findAllTypes();
     }
 
-    List<Type> findPokemonTypesById(Long id) {
-        return null;
-    }
 
     public List<Type> getPokemonType(Long id) {
         return repository.findTypesByPokemonId(id);

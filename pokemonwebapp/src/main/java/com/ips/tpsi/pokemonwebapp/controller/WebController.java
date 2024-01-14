@@ -1,5 +1,6 @@
 package com.ips.tpsi.pokemonwebapp.controller;
 import com.ips.tpsi.pokemonwebapp.entity.Type;
+import com.ips.tpsi.pokemonwebapp.repository.PokemonRepository;
 import org.springframework.ui.Model;
 import com.ips.tpsi.pokemonwebapp.bc.WebBc;
 import com.ips.tpsi.pokemonwebapp.entity.Pokemon;
@@ -19,6 +20,8 @@ public class WebController {
 
     @Autowired
     WebBc bc;
+    @Autowired
+    private PokemonRepository pokemon;
 
     @GetMapping("/listAllPokemons")
     public String listAllPokemons(Model model) {
@@ -27,7 +30,12 @@ public class WebController {
         return "listPokemons";
     }
 
-
+    @GetMapping("/listDisablePokemons")
+    public String listDisablePokemons(Model model) {
+        List<Pokemon> disabledPokemons = bc.getDisabledPokemons();
+        model.addAttribute("disabledPokemons", disabledPokemons);
+        return "listDisablePokemons";
+    }
     @GetMapping("/pokemon/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
         Optional<Pokemon> optionalPokemon = Optional.ofNullable(bc.getPokemonById(id));
@@ -35,21 +43,34 @@ public class WebController {
         if (optionalPokemon.isPresent()) {
             Pokemon pokemon = optionalPokemon.get();
             model.addAttribute("pokemon", pokemon);
-            return "editPokemon"; // Nome da página de edição
+            return "editPokemon";
         } else {
-            // Adicionar a mensagem de alerta à model
+            model.addAttribute("alertMessage", "Pokemon with ID " + id + " not found.");
+            return "editPokemon";
+        }
+    }
+    /*
+    @GetMapping("/pokemon/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Optional<Pokemon> optionalPokemon = Optional.ofNullable(bc.getPokemonById(id));
+
+        if (optionalPokemon.isPresent()) {
+            Pokemon pokemon = optionalPokemon.get();
+            return "editPokemon";
+        } else {
             model.addAttribute("alertMessage", "Pokemon with ID " + id + " not found.");
             return "editPokemon";
         }
     }
 
+     */
+
     @PostMapping("/pokemon/{id}/edit")
     public String handleEditForm(@PathVariable Long id, @ModelAttribute Pokemon updatedPokemon, Model model) {
         try {
             bc.editPokemon(id, updatedPokemon);
-            return "redirect:/listAllPokemons";  // Redirecionar para a página de listagem após a edição
+            return "redirect:/listAllPokemons";
         } catch (NoSuchElementException e) {
-            // Adicionar a mensagem de alerta à model
             model.addAttribute("alertMessage", "Pokemon with ID " + id + " not found.");
             return "editPokemon";
         }
@@ -71,6 +92,8 @@ public class WebController {
                     .collect(Collectors.toSet());
 
             // Adicionar atributos ao modelo
+            model.addAttribute("pokemon", bc.getPokemonById(id));
+            model.addAttribute("idPokemon", id);
             model.addAttribute("allTypes", allTypes);
             model.addAttribute("pokemonTypes", pokemonTypes);
             model.addAttribute("selectedTypeIds", selectedTypeIds);
@@ -139,15 +162,6 @@ public class WebController {
         ModelAndView mv = new ModelAndView("index");
         mv.addObject("pokemon", pokemon);
         return mv;
-    }
-
-    @GetMapping("/listDisablePokemons")
-    public String listDisablePokemons(Model model) {
-        // Lógica para obter a lista de Pokémon desativados e adicioná-la ao modelo
-        List<Pokemon> disabledPokemons = bc.getDisabledPokemons();
-        model.addAttribute("disabledPokemons", disabledPokemons);
-
-        return "listDisablePokemons";
     }
 
 }

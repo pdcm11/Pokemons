@@ -9,19 +9,21 @@ table {
     border-collapse: collapse;
     margin-top: 20px;
 }
+.gray{
+    color: gray;
+}
 
 div.stickyTop {
     background-color: #f2f2f2;
     position: sticky;
     top: 0;
-    z-index: 10;
 }
 
 thead.stickyTable {
     background-color: #f2f2f2;
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 1;
 }
 th, td {
     padding: 10px;
@@ -97,3 +99,8 @@ pre {
     font-style: inherit;
     text-align: center;
 }
+
+.text-center {
+    text-align: center;
+}
+

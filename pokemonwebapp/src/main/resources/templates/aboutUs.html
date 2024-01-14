@@ -3,37 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>About Us</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>About Us</h1>
-<button class="btn btn-dark" onclick="window.location.href='http://localhost:8080/home'">Home</button>
-<pre>
-<p> Trabalho de Grupo</p>
-<p> TPSI - VFX 2023/2024</p>
-<p> Base de Dados II</p>
-    <p><b> Objetivos da aplicação:</b>
+<div class="container mt-4">
+    <h1>About Us</h1>
+    <button class="btn btn-dark" onclick="window.location.href='http://localhost:8080/home'">Home</button>
+    <div class="row d-flex align-items-center">
+        <div class="col-md-6">
+            <br>
+            <br>
+            <br>
+            <br>
+            <img th:src="@{/img/Pokemon.jpg}" alt="Pokemon" class="img-fluid">
+        </div>
 
-    -> Gerir pokemons
+        <div class="col-md-6 text-center">
+            <br>
+            <p> <b>Trabalho de Grupo </b></p>
+            <p> TPSI - VFX 2023/2024</p>
+            <p> Base de Dados II</p>
+            <br>
+            <p><b>Elementos do Grupo</b></p>
+            <br>
+            <p>João Pedro Costa - 220001295</p>
+            <p> Pedro Marques - 220000988</p>
+            <p> Rodrigo Passos - 220000051</p>
+            <br>
+            <p><b> Objetivos da aplicação:</b></p>
+            <br>
+            <p>> Gerir pokemons</p>
+            <p>- listar</p>
+            <p>- mostrar tipos associados</p>
+            <p>- editar</p>
+            <p>- desativar / reativar</p>
 
-    - listar
-
-    - editar
-
-    - mostrar tipos
-    associados
-
-    - desativar
-
-    - consultar
-</p>
-    <p>         João Pedro Costa - 220001295
-
-        Pedro Marques - 220000988
-
-        Rodrigo Passos - 220000051
-</p>
-</pre>
-
+        </div>
+    </div>
+</div>
 </body>
 </html>

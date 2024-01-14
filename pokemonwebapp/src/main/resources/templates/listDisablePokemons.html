@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Pokemons List</title>
+    <title>Disable Pokemons</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -14,12 +14,9 @@
 <body>
 
 <div class="stickyTop" >
-    <h1><b>Pokemon List</b></h1>
-    <form th:action="@{/search}" method="get">
+    <h1 class="gray"><b>Disable Pokemon List</b></h1>
         <div id="botoesIndex" style="text-align: left; margin-bottom: 20px;">
             <button class="btn btn-dark" onclick="window.location.href='http://localhost:8080/home'">Home</button>
-            <button type="submit" class="btn btn-primary">Search</button>
-            <input type="text" name="searchName" placeholder="Search by name...">
         </div>
     </form>
 </div>
@@ -43,7 +40,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="pokemon : ${pokemonList}">
+    <tr th:each="pokemon : ${disabledPokemons}">
         <td th:text="${pokemon.number} ?: 'N/A'"></td>
         <td th:text="${pokemon.name} ?: 'N/A'"></td>
         <td th:text="${pokemon.hpScore} ?: 'N/A'"></td>
@@ -60,11 +57,8 @@
             </button>
         </td>
         <td>
-            <a th:href="@{/pokemon/{id}/edit(id=*{pokemon.idPokemon})}" class="btn btn-primary">Edit</a>
-        </td>
-        <td>
             <form th:action="@{/pokemon/{id}/activate(id=${pokemon.idPokemon})}" method="post">
-                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to activate this Pokemon?')">
+                <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to activate this Pokemon?')">
                     Activate
                 </button>
             </form>
@@ -74,7 +68,7 @@
     </tbody>
 </table>
 
-<div th:each="pokemon : ${pokemonList}" th:id="'pokemonModal' + ${pokemon.idPokemon}" class="modal fade" role="dialog">
+<div th:each="pokemon : ${disabledPokemons}" th:id="'pokemonModal' + ${pokemon.idPokemon}" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
