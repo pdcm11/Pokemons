@@ -29,6 +29,7 @@
         <th>Legendary</th>
         <th></th>
         <th></th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -42,7 +43,7 @@
         <td th:text="${pokemon.specialDefenceScore} ?: 'N/A'"></td>
         <td th:text="${pokemon.speed} ?: 'N/A'"></td>
         <td th:text="${pokemon.generation} ?: 'N/A'"></td>
-        <td th:text="${pokemon.legendary}"></td>
+        <td th:text="${pokemon.legendary ? 'Yes' : 'No'}"></td>
         <td>
             <button type="button" class="btn btn-info" data-toggle="modal" th:data-target="'#pokemonModal' + ${pokemon.idPokemon}">
                 Types
@@ -50,6 +51,13 @@
         </td>
         <td>
             <a th:href="@{/pokemon/{id}/edit(id=*{pokemon.idPokemon})}" class="btn btn-primary">Edit</a>
+        </td>
+        <td>
+            <form th:action="@{/pokemon/{id}/deactivate(id=${pokemon.idPokemon})}" method="post">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to deactivate this Pokemon?')">
+                    Deactivate
+                </button>
+            </form>
         </td>
 
     </tr>

@@ -57,6 +57,18 @@ public class WebController {
         }
     }
 
+    @PostMapping("/pokemon/{id}/deactivate")
+    public String deactivatePokemon(@PathVariable Long id, Model model) {
+        try {
+            bc.deactivatePokemon(id);
+            return "redirect:/listAllPokemons"; // Redireciona para a lista após a desativação
+        } catch (NoSuchElementException e) {
+            model.addAttribute("alertMessage", "Pokemon with ID " + id + " not found.");
+            return "listPokemons";
+        }
+    }
+
+
     @GetMapping("/home") // @GetMapping("/")
     public ModelAndView getHome() {
         ModelAndView mv = new ModelAndView("index");

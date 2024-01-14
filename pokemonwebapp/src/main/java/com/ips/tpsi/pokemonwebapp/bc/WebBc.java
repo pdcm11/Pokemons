@@ -57,9 +57,14 @@ public class WebBc {
         Pokemon pokemon = repository.findPokemonByName(name);
         repository.save(pokemon);
     }
+    public List<Pokemon> listActivePokemons() {
+        return repository.findAll().stream()
+                .filter(Pokemon::getIsActive) // Filtra apenas os Pokémon com isActive = true
+                .collect(Collectors.toList());
+    }
 
     public List<Pokemon> listAllPokemons() {
-        return repository.findAll();
+        return listActivePokemons();
     }
 
     public Pokemon getPokemonById(Long id) {
@@ -89,6 +94,18 @@ public class WebBc {
 
     public List<Object[]> getPokemonTypesById(Long id) {
         return repository.findPokemonTypesById(id);
+    }
+
+    public void deactivatePokemon(Long id) {
+        Optional<Pokemon> optionalPokemon = repository.findById(id);
+
+        if (optionalPokemon.isPresent()) {
+            Pokemon pokemon = optionalPokemon.get();
+            pokemon.setIsActive(false);
+            repository.save(pokemon);
+        } else {
+            throw new NoSuchElementException("Pokemon with ID " + id + " not found.");
+        }
     }
 
     public Pokemon getRepositoryPokemonInfoByName(String name) {
