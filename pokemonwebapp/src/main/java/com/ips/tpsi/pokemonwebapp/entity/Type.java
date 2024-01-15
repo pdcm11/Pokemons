@@ -19,11 +19,11 @@ public class Type {
 
     @Id
     @Column(name = "id_type")
-    private Integer idType;
+    private Long idType;
     @Column(name = "name")
     private String name;
 
-    public Integer getId() {
+    public Long getId() {
         return idType;
     }
 }
