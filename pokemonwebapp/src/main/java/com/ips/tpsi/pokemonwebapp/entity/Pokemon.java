@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "pokemon")
@@ -58,6 +60,9 @@ public class Pokemon {
 
     @Transient
     private List<Long> selectedTypeIds;
+
+    @OneToMany(mappedBy = "pokemon", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Pokemon_Type> pokemonTypes = new HashSet<>();
 
 
 

@@ -1,4 +1,5 @@
 package com.ips.tpsi.pokemonwebapp.controller;
+import com.ips.tpsi.pokemonwebapp.entity.Pokemon_Type;
 import com.ips.tpsi.pokemonwebapp.entity.Type;
 import com.ips.tpsi.pokemonwebapp.repository.PokemonRepository;
 import org.springframework.ui.Model;
@@ -107,6 +108,7 @@ public class WebController {
             return "errorPage";
         }
     }
+
 
     @PostMapping("/pokemon/{id}/deactivate")
     public String deactivatePokemon(@PathVariable Long id, Model model) {

@@ -15,9 +15,9 @@ import lombok.Setter;
 public class Pokemon_Type {
 
     @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pokemon_type")
-    private Integer idPokemonType;
+    private Long idPokemonType;
 
     @Column(name = "pokemon_type_level")
     private Integer pokemonTypeLevel;

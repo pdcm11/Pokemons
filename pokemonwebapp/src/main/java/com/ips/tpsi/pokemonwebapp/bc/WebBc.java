@@ -2,8 +2,10 @@ package com.ips.tpsi.pokemonwebapp.bc;
 
 
 import com.ips.tpsi.pokemonwebapp.entity.Pokemon;
+import com.ips.tpsi.pokemonwebapp.entity.Pokemon_Type;
 import com.ips.tpsi.pokemonwebapp.entity.Type;
 import com.ips.tpsi.pokemonwebapp.repository.PokemonRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -69,11 +71,7 @@ public class WebBc {
                 .filter(pokemon -> !pokemon.getIsActive())
                 .collect(Collectors.toList());
     }
-    public List<Pokemon> listDisablePokemons() {
-        return repository.findAll().stream()
-                .filter(pokemon -> !pokemon.getIsActive())
-                .collect(Collectors.toList());
-    }
+
     public List<Pokemon> listAllPokemons() {
         return listActivePokemons();
     }

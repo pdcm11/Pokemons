@@ -54,9 +54,8 @@
         <option th:each="type : ${allTypes}" th:value="${type.id}" th:text="${type.name}"></option>
     </select>
     alteração editar types -->
-    <button class="btn btn-primary" th:onclick="|window.location.href='/pokemon/' + ${pokemon.idPokemon} + '/edit/types|">Edit Types</button>
-    <!--    <button class="btn btn-primary" th:onclick="|window.location.href='/pokemon/${id}/edit/types'|">Edit Types</button> -->
-    <button  class="btn btn-secondary" th:onclick="window.location.href='http://localhost:8080/listPokemons'">Cancel</button>
+    <button class="btn btn-primary" type="button" th:onclick="|window.location.href='/pokemon/${id}/edit/types'|">Edit Types</button>
+    <button class="btn btn-secondary" type="button" onclick="window.location.href='/listAllPokemons'">Cancel</button>
     <button  class="btn btn-success" type="submit">Save</button>
 
 </form>
