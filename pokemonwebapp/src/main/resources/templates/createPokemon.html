@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Pokemon</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/edit.css"/>
+
+</head>
+<body>
+<div class="title-container">
+    <h1><b>Create Pokemon</b></h1>
+</div>
+<div class="formDiv">
+
+    <form th:method="post" th:action="@{/createPokemon}" >
+
+        <label for="number">Number:</label>
+        <input type="text" id="number" name="number" required>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="hpScore">HP Score:</label>
+        <input type="text" id="hpScore" name="hpScore" required>
+
+        <label for="attackScore">Attack Score:</label>
+        <input type="text" id="attackScore" name="attackScore" required>
+
+        <label for="defenceScore">Defence Score:</label>
+        <input type="text" id="defenceScore" name="defenceScore" required>
+
+        <label for="specialAttackScore">Special Attack Score:</label>
+        <input type="text" id="specialAttackScore" name="specialAttackScore" required>
+
+        <label for="specialDefenceScore">Special Defence Score:</label>
+        <input type="text" id="specialDefenceScore" name="specialDefenceScore" required>
+
+        <label for="speed">Speed:</label>
+        <input type="text" id="speed" name="speed" required>
+
+        <label for="generation">Generation:</label>
+        <input type="text" id="generation" name="generation" required>
+
+        <label for="legendary">Legendary:</label>
+        <input type="checkbox" id="legendary" name="legendary">
+
+        <input type="hidden" id="isActive" name="isActive" value="true">
+
+
+        <button class="btn btn-secondary" type="button" th:onclick="window.location.href='http://localhost:8080/home'">Cancel</button>
+        <button  class="btn btn-success" type="submit">Create</button>
+
+    </form>
+</div>
+</body>
+</html>

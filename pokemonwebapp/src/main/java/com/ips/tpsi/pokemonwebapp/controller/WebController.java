@@ -21,6 +21,30 @@ public class WebController {
     @Autowired
     private PokemonRepository pokemon;
 
+    @GetMapping("/createPokemon")
+    public String showCreateForm(Model model) {
+        return "createPokemon";
+    }
+
+    @PostMapping("/createPokemon")
+    public String handleCreateForm(
+            @RequestParam Integer number,
+            @RequestParam String name,
+            @RequestParam Integer hpScore,
+            @RequestParam Integer attackScore,
+            @RequestParam Integer defenceScore,
+            @RequestParam Integer specialAttackScore,
+            @RequestParam Integer specialDefenceScore,
+            @RequestParam Integer speed,
+            @RequestParam Integer generation,
+            @RequestParam Boolean legendary,
+            @RequestParam Boolean isActive,
+            Model model
+    ) {
+        bc.createPokemon(number, name, hpScore, attackScore, defenceScore, specialAttackScore, specialDefenceScore, speed, generation, legendary, isActive);
+        return "redirect:/listAllPokemons";
+    }
+
     @GetMapping("/listAllPokemons")
     public String listAllPokemons(Model model) {
         List<Pokemon> pokemonList = bc.listAllPokemons();

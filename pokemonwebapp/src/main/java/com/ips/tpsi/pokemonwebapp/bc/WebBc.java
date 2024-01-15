@@ -21,39 +21,35 @@ public class WebBc {
     @Autowired
     PokemonRepository repository;
 
-    public void getRepositoryPokemonInfo(
+    public void createPokemon(
             Integer number,
             String name,
             Integer hpScore,
             Integer attackScore,
             Integer defenceScore,
             Integer specialAttackScore,
+            Integer specialDefenceScore,
             Integer speed,
             Integer generation,
             Boolean legendary,
             Boolean isActive
     ) {
-        List<Pokemon> pokemonList = repository.findAll(); // select * from pokemon;
+        Pokemon newPokemon = new Pokemon();
+        newPokemon.setNumber(number);
+        newPokemon.setName(name);
+        newPokemon.setHpScore(hpScore);
+        newPokemon.setAttackScore(attackScore);
+        newPokemon.setDefenceScore(defenceScore);
+        newPokemon.setSpecialAttackScore(specialAttackScore);
+        newPokemon.setSpecialDefenceScore(specialDefenceScore);
+        newPokemon.setSpeed(speed);
+        newPokemon.setGeneration(generation);
+        newPokemon.setLegendary(legendary);
+        newPokemon.setIsActive(isActive);
 
-        // método 1 - construir o objeto
-        Pokemon pokemon1 = new Pokemon();
-        pokemon1.setNumber(number);
-        pokemon1.setName(name);
-        pokemon1.setHpScore(hpScore);
-        pokemon1.setAttackScore(attackScore);
-        pokemon1.setDefenceScore(defenceScore);
-        pokemon1.setSpecialAttackScore(specialAttackScore);
-        pokemon1.setSpeed(speed);
-        pokemon1.setGeneration(generation);
-        pokemon1.setLegendary(legendary);
-        pokemon1.setIsActive(isActive);
-
-        repository.save(pokemon1);
-
-        // método 2 - construir o objeto c/ o que vem da bd + a alteração
-        Pokemon pokemon = repository.findPokemonByName(name);
-        repository.save(pokemon);
+        repository.save(newPokemon);
     }
+
     public List<Pokemon> listActivePokemons() {
         return repository.findAll().stream()
                 .filter(Pokemon::getIsActive)

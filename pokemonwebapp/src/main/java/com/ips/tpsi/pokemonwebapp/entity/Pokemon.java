@@ -19,6 +19,7 @@ public class Pokemon {
 
     @Id
     @Column(name = "id_pokemon")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idPokemon;
 
     @Column(name = "number")
