@@ -37,10 +37,16 @@ public class WebController {
             @RequestParam Integer specialDefenceScore,
             @RequestParam Integer speed,
             @RequestParam Integer generation,
-            @RequestParam Boolean legendary,
+            @RequestParam(required = false) Boolean legendary,
             @RequestParam Boolean isActive,
             Model model
+
+
     ) {
+        if (legendary == null) {
+            legendary = false;
+        }
+
         bc.createPokemon(number, name, hpScore, attackScore, defenceScore, specialAttackScore, specialDefenceScore, speed, generation, legendary, isActive);
         return "redirect:/listAllPokemons";
     }

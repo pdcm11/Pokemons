@@ -34,6 +34,11 @@ public class WebBc {
             Boolean legendary,
             Boolean isActive
     ) {
+
+        if (legendary == null) {
+            legendary = false;
+        }
+
         Pokemon newPokemon = new Pokemon();
         newPokemon.setNumber(number);
         newPokemon.setName(name);
