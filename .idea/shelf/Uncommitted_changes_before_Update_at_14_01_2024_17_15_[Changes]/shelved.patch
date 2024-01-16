@@ -1,0 +1,185 @@
+Index: pokemonwebapp/src/main/java/com/ips/tpsi/pokemonwebapp/controller/WebController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.ips.tpsi.pokemonwebapp.controller;\r\nimport com.ips.tpsi.pokemonwebapp.entity.Type;\r\nimport org.springframework.ui.Model;\r\nimport com.ips.tpsi.pokemonwebapp.bc.WebBc;\r\nimport com.ips.tpsi.pokemonwebapp.entity.Pokemon;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Controller;\r\nimport org.springframework.web.bind.annotation.GetMapping;\r\nimport org.springframework.web.bind.annotation.ModelAttribute;\r\nimport org.springframework.web.bind.annotation.PathVariable;\r\nimport org.springframework.web.bind.annotation.PostMapping;\r\nimport org.springframework.web.servlet.ModelAndView;\r\n\r\nimport java.util.List;\r\nimport java.util.NoSuchElementException;\r\nimport java.util.Optional;\r\nimport java.util.Set;\r\nimport java.util.stream.Collectors;\r\n\r\n@Controller\r\npublic class WebController {\r\n\r\n    @Autowired\r\n    WebBc bc;\r\n\r\n    @GetMapping(\"/listAllPokemons\")\r\n    public String listAllPokemons(Model model) {\r\n        List<Pokemon> pokemonList = bc.listAllPokemons();\r\n        model.addAttribute(\"pokemonList\", pokemonList);\r\n        return \"listPokemons\";\r\n    }\r\n\r\n    @GetMapping(\"/pokemon/{id}/edit\")\r\n    public String showEditForm(@PathVariable Long id, Model model) {\r\n        Optional<Pokemon> optionalPokemon = Optional.ofNullable(bc.getPokemonById(id));\r\n\r\n        if (optionalPokemon.isPresent()) {\r\n            Pokemon pokemon = optionalPokemon.get();\r\n            model.addAttribute(\"pokemon\", pokemon);\r\n            return \"editPokemon\"; // Nome da página de edição\r\n        } else {\r\n            // Adicionar a mensagem de alerta à model\r\n            model.addAttribute(\"alertMessage\", \"Pokemon with ID \" + id + \" not found.\");\r\n            return \"editPokemon\";\r\n        }\r\n    }\r\n\r\n    @PostMapping(\"/pokemon/{id}/edit\")\r\n    public String handleEditForm(@PathVariable Long id, @ModelAttribute Pokemon updatedPokemon, Model model) {\r\n        try {\r\n            bc.editPokemon(id, updatedPokemon);\r\n            return \"redirect:/listAllPokemons\";  // Redirecionar para a página de listagem após a edição\r\n        } catch (NoSuchElementException e) {\r\n            // Adicionar a mensagem de alerta à model\r\n            model.addAttribute(\"alertMessage\", \"Pokemon with ID \" + id + \" not found.\");\r\n            return \"editPokemon\";\r\n        }\r\n    }\r\n\r\n    @GetMapping(\"/home\") // @GetMapping(\"/\")\r\n    public ModelAndView getHome() {\r\n        ModelAndView mv = new ModelAndView(\"index\");\r\n        // aceder à business component > acede ao repositorio > obtem dados\r\n\r\n        return mv;\r\n    }\r\n\r\n    @GetMapping(\"/aboutUs\") // @GetMapping(\"/\")\r\n    public ModelAndView getAboutUs() {\r\n        ModelAndView mv = new ModelAndView(\"aboutUs\");\r\n        return mv;\r\n    }\r\n\r\n    @GetMapping(\"/uniquePokemon\")\r\n    public ModelAndView getPokemonByName(String name) {\r\n        Pokemon pokemon = bc.getRepositoryPokemonInfoByName(name);\r\n        ModelAndView mv = new ModelAndView(\"index\");\r\n        mv.addObject(\"pokemon\", pokemon);\r\n        return mv;\r\n    }\r\n\r\n    @GetMapping(\"/pokemon/{id}/edit/types\")\r\n    public String handleEditTypesForm(@PathVariable Long id, @ModelAttribute Pokemon updatedPokemon, Model model) {\r\n        try {\r\n            // Obter a lista de todos os tipos disponíveis\r\n            List<Type> allTypes = bc.getAllTypes();\r\n\r\n            // Obter a lista de tipos associados ao Pokémon\r\n            List<Type> pokemonTypes = bc.getPokemonType(id);\r\n\r\n            // Preencher os IDs dos tipos associados ao Pokémon\r\n            Set<Long> selectedTypeIds = pokemonTypes.stream()\r\n                    .map(Type::getId)\r\n                    .map(Integer::longValue) // Converter Integer para Long\r\n                    .collect(Collectors.toSet());\r\n\r\n            // Adicionar atributos ao modelo\r\n            model.addAttribute(\"allTypes\", allTypes);\r\n            model.addAttribute(\"pokemonTypes\", pokemonTypes);\r\n            model.addAttribute(\"selectedTypeIds\", selectedTypeIds);\r\n\r\n            return \"editPokemonTypes\";\r\n\r\n        } catch (Exception e) {\r\n            // Log do erro ou tratamento adequado\r\n            e.printStackTrace();\r\n            model.addAttribute(\"error\", \"Erro ao editar tipos de Pokémon.\");\r\n            return \"errorPage\";  // Página de erro personalizada\r\n        }\r\n    }\r\n\r\n\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pokemonwebapp/src/main/java/com/ips/tpsi/pokemonwebapp/controller/WebController.java b/pokemonwebapp/src/main/java/com/ips/tpsi/pokemonwebapp/controller/WebController.java
+--- a/pokemonwebapp/src/main/java/com/ips/tpsi/pokemonwebapp/controller/WebController.java	(revision f5eecb3ed5deffd050657184bc0844444e1dde5a)
++++ b/pokemonwebapp/src/main/java/com/ips/tpsi/pokemonwebapp/controller/WebController.java	(date 1705244005695)
+@@ -108,8 +108,4 @@
+             return "errorPage";  // Página de erro personalizada
+         }
+     }
+-
+-
+-
+-
+ }
+Index: pokemonwebapp/src/main/resources/templates/editPokemon.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <title>Edit Pokemon</title>\r\n    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\">\r\n    <script src=\"https://code.jquery.com/jquery-3.2.1.slim.min.js\"></script>\r\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js\"></script>\r\n    <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js\"></script>\r\n    <link rel=\"stylesheet\" th:href=\"@{/static/edit.css}\"/>\r\n    <script th:if=\"${alertMessage}\">\r\n        alert([[${alertMessage}]]);\r\n    </script>\r\n\r\n</head>\r\n<body>\r\n<link rel=\"stylesheet\" th:href=\"@{/static/edit.css}\"/>\r\n<h2>Edit Pokemon</h2>\r\n<br>\r\n\r\n<button class=\"btn btn-primary\" th:onclick=\"|window.location.href='/pokemon/${id}/edit/types'|\">Edit Types</button>\r\n<!-- <button type=\"submit\" class=\"btn btn-Success\">Salvar</button> -->\r\n\r\n<form th:object=\"${pokemon}\" th:action=\"@{/pokemon/{id}/edit(id=*{idPokemon})}\" th:method=\"post\">\r\n    <!-- Campos do formulário para editar o Pokemon -->\r\n    <label for=\"name\">Name:</label>\r\n    <input type=\"text\" id=\"name\" th:field=\"*{name}\" required>\r\n    <br>\r\n    <label for=\"hpScore\">HP Score:</label>\r\n    <input type=\"text\" id=\"hpScore\" th:field=\"*{hpScore}\" required>\r\n\r\n    <label for=\"attackScore\">Attack Score:</label>\r\n    <input type=\"text\" id=\"attackScore\" th:field=\"*{attackScore}\" required>\r\n\r\n    <label for=\"defenceScore\">Defence Score:</label>\r\n    <input type=\"text\" id=\"defenceScore\" th:field=\"*{defenceScore}\" required>\r\n\r\n    <label for=\"specialAttackScore\">Special Attack Score:</label>\r\n    <input type=\"text\" id=\"specialAttackScore\" th:field=\"*{specialAttackScore}\" required>\r\n\r\n    <label for=\"specialDefenceScore\">Special Defence Score:</label>\r\n    <input type=\"text\" id=\"specialDefenceScore\" th:field=\"*{specialDefenceScore}\" required>\r\n\r\n    <label for=\"speed\">Speed:</label>\r\n    <input type=\"text\" id=\"speed\" th:field=\"*{speed}\" required>\r\n\r\n    <label for=\"generation\">Generation:</label>\r\n    <input type=\"text\" id=\"generation\" th:field=\"*{generation}\" required>\r\n\r\n    <label for=\"legendary\">Legendary:</label>\r\n    <input type=\"checkbox\" id=\"legendary\" th:field=\"*{legendary}\">\r\n\r\n    <!-- alteração editar types -->\r\n    <label for=\"types\">Types:</label>\r\n    <select id=\"types\" multiple=\"multiple\" th:field=\"*{types}\">\r\n        <option th:each=\"type : ${allTypes}\" th:value=\"${type.id}\" th:text=\"${type.name}\"></option>\r\n    </select>\r\n    <!-- alteração editar types -->\r\n\r\n    <button class=\"btn btn-secondary\" th:onclick=\"window.location.href='http://localhost:8080/listPokemons'\">-> Lista Pokemons</button>\r\n    <button class=\"btn btn-success\" type=\"submit\">Salvar</button>\r\n\r\n</form>\r\n\r\n<style>\r\n\r\n\r\nbody {\r\nfont-family: Arial, sans-serif;\r\nbackground-color: #f4f4f4;\r\n    justify-content: center;\r\n    align-items: center;\r\nmargin: 0;\r\nheight: 100vh;\r\n    display: flex;\r\n}\r\n\r\nform {\r\n    width: 50%;\r\n    padding: 20px;\r\n    border: 1px solid #ccc;\r\n    border-radius: 4px;\r\n    box-shadow: 0 0 10px rgba(0,0,0,0.1);\r\n}\r\n\r\nh2{\r\n    text-align: center;\r\n    display: flex;\r\n    padding: 25px;\r\n}\r\n.container {\r\nmax-width: 800px;\r\nmargin: 20px auto;\r\nbackground-color: #fff;\r\npadding: 20px;\r\nborder-radius: 8px;\r\nbox-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\r\n}\r\n\r\n.form-group {\r\nmargin-bottom: 20px;\r\n}\r\n\r\nlabel {\r\ndisplay: block;\r\nfont-weight: bold;\r\nmargin-bottom: 5px;\r\n}\r\n\r\ninput {\r\nwidth: 100%;\r\npadding: 8px;\r\nmargin-top: 5px;\r\nbox-sizing: border-box;\r\nborder: 1px solid #ccc;\r\nborder-radius: 4px;\r\n}\r\n\r\nbutton {\r\nbackground-color: #4caf50;\r\ncolor: #fff;\r\npadding: 10px 15px;\r\nborder: none;\r\nborder-radius: 4px;\r\ncursor: pointer;\r\nfont-size: 16px;\r\n}\r\n\r\nbutton:hover {\r\nbackground-color: #45a049;\r\n}\r\n</style>\r\n</body>\r\n\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pokemonwebapp/src/main/resources/templates/editPokemon.html b/pokemonwebapp/src/main/resources/templates/editPokemon.html
+--- a/pokemonwebapp/src/main/resources/templates/editPokemon.html	(revision f5eecb3ed5deffd050657184bc0844444e1dde5a)
++++ b/pokemonwebapp/src/main/resources/templates/editPokemon.html	(date 1705246592000)
+@@ -62,74 +62,6 @@
+ 
+ </form>
+ 
+-<style>
+-
+-
+-body {
+-font-family: Arial, sans-serif;
+-background-color: #f4f4f4;
+-    justify-content: center;
+-    align-items: center;
+-margin: 0;
+-height: 100vh;
+-    display: flex;
+-}
+-
+-form {
+-    width: 50%;
+-    padding: 20px;
+-    border: 1px solid #ccc;
+-    border-radius: 4px;
+-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+-}
+-
+-h2{
+-    text-align: center;
+-    display: flex;
+-    padding: 25px;
+-}
+-.container {
+-max-width: 800px;
+-margin: 20px auto;
+-background-color: #fff;
+-padding: 20px;
+-border-radius: 8px;
+-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+-}
+-
+-.form-group {
+-margin-bottom: 20px;
+-}
+-
+-label {
+-display: block;
+-font-weight: bold;
+-margin-bottom: 5px;
+-}
+-
+-input {
+-width: 100%;
+-padding: 8px;
+-margin-top: 5px;
+-box-sizing: border-box;
+-border: 1px solid #ccc;
+-border-radius: 4px;
+-}
+-
+-button {
+-background-color: #4caf50;
+-color: #fff;
+-padding: 10px 15px;
+-border: none;
+-border-radius: 4px;
+-cursor: pointer;
+-font-size: 16px;
+-}
+-
+-button:hover {
+-background-color: #45a049;
+-}
+-</style>
+ </body>
+ 
+ </html>
+\ No newline at end of file
+Index: pokemonwebapp/src/main/resources/templates/listPokemons.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <title>Listagem de Pokémons</title>\r\n    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\">\r\n    <script src=\"https://code.jquery.com/jquery-3.2.1.slim.min.js\"></script>\r\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js\"></script>\r\n    <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js\"></script>\r\n    <link rel=\"stylesheet\" href=\"style.css\">\r\n</head>\r\n<body>\r\n<h1>Pokemons List By Grupo Maravilha</h1>\r\n<!--<a th:href=\"@{http://localhost:8080/}\">Voltar à página</a> -->\r\n\r\n<button th:onclick=\"window.location.href='http://localhost:8080/home'\">Home</button>\r\n<table>\r\n    <thead>\r\n    <tr>\r\n        <th>Number</th>\r\n        <th>Name</th>\r\n        <th>HP Score</th>\r\n        <th>Attack Score</th>\r\n        <th>Defence Score</th>\r\n        <th>Special Attack Score</th>\r\n        <th>Special Defence Score</th>\r\n        <th>Speed</th>\r\n        <th>Generation</th>\r\n        <th>Legendary</th>\r\n        <th></th>\r\n        <th></th>\r\n    </tr>\r\n    </thead>\r\n    <tbody>\r\n    <tr th:each=\"pokemon : ${pokemonList}\">\r\n        <td th:text=\"${pokemon.number} ?: 'N/A'\"></td>\r\n        <td th:text=\"${pokemon.name} ?: 'N/A'\"></td>\r\n        <td th:text=\"${pokemon.hpScore} ?: 'N/A'\"></td>\r\n        <td th:text=\"${pokemon.attackScore} ?: 'N/A'\"></td>\r\n        <td th:text=\"${pokemon.defenceScore} ?: 'N/A'\"></td>\r\n        <td th:text=\"${pokemon.specialAttackScore} ?: 'N/A'\"></td>\r\n        <td th:text=\"${pokemon.specialDefenceScore} ?: 'N/A'\"></td>\r\n        <td th:text=\"${pokemon.speed} ?: 'N/A'\"></td>\r\n        <td th:text=\"${pokemon.generation} ?: 'N/A'\"></td>\r\n        <td th:text=\"${pokemon.legendary}\"></td>\r\n        <td>\r\n            <button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" th:data-target=\"'#pokemonModal' + ${pokemon.idPokemon}\">\r\n                Types\r\n            </button>\r\n        </td>\r\n        <td>\r\n            <a th:href=\"@{/pokemon/{id}/edit(id=*{pokemon.idPokemon})}\" class=\"btn btn-primary\">Edit</a>\r\n        </td>\r\n\r\n    </tr>\r\n    </tbody>\r\n</table>\r\n\r\n<div th:each=\"pokemon : ${pokemonList}\" th:id=\"'pokemonModal' + ${pokemon.idPokemon}\" class=\"modal fade\" role=\"dialog\">\r\n    <div class=\"modal-dialog\">\r\n        <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n                <h4 class=\"modal-title\">Pokémon Details</h4>\r\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\r\n            </div>\r\n            <div class=\"modal-body\">\r\n                <p th:text=\"'Number: ' + ${pokemon.number}\"></p>\r\n                <p th:text=\"'Name: ' + ${pokemon.name}\"></p>\r\n\r\n                <!-- Mostrar tipos associados -->\r\n                <h3>Types:</h3>\r\n                <ul>\r\n                    <li th:each=\"typeInfo : ${pokemon.types}\">\r\n                        <span th:text=\"${typeInfo.type.name}\"></span> <!-- Nome do tipo -->\r\n                        <span th:if=\"${!#strings.isEmpty(typeInfo.pokemonTypeLevel)}\"> (Level: <span th:text=\"${typeInfo.pokemonTypeLevel}\"></span>)</span>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n            <div class=\"modal-footer\">\r\n                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Fechar</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n</body>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pokemonwebapp/src/main/resources/templates/listPokemons.html b/pokemonwebapp/src/main/resources/templates/listPokemons.html
+--- a/pokemonwebapp/src/main/resources/templates/listPokemons.html	(revision f5eecb3ed5deffd050657184bc0844444e1dde5a)
++++ b/pokemonwebapp/src/main/resources/templates/listPokemons.html	(date 1705244017778)
+@@ -43,6 +43,8 @@
+         <td th:text="${pokemon.speed} ?: 'N/A'"></td>
+         <td th:text="${pokemon.generation} ?: 'N/A'"></td>
+         <td th:text="${pokemon.legendary}"></td>
++        <!-- <td th:text="${pokemon.isLegendary} ? 'Legendary' : ''"></td> -->
++
+         <td>
+             <button type="button" class="btn btn-info" data-toggle="modal" th:data-target="'#pokemonModal' + ${pokemon.idPokemon}">
+                 Types
+Index: pokemonwebapp/src/main/java/com/ips/tpsi/pokemonwebapp/bc/WebBc.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.ips.tpsi.pokemonwebapp.bc;\r\n\r\n\r\nimport com.ips.tpsi.pokemonwebapp.entity.Pokemon;\r\nimport com.ips.tpsi.pokemonwebapp.entity.Type;\r\nimport com.ips.tpsi.pokemonwebapp.repository.PokemonRepository;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.data.jpa.repository.JpaRepository;\r\nimport org.springframework.data.jpa.repository.Query;\r\nimport org.springframework.data.repository.query.Param;\r\nimport org.springframework.stereotype.Repository;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\n\r\nimport java.util.*;\r\nimport java.util.stream.Collectors;\r\n\r\n// a anotação Service serve para definir serviços, neste caso o nosso BC que é onde está a componente de lógica de negócio\r\n\r\n@Service\r\npublic class WebBc {\r\n\r\n    @Autowired\r\n    PokemonRepository repository;\r\n\r\n    public void getRepositoryPokemonInfo(\r\n            Integer number,\r\n            String name,\r\n            Integer hpScore,\r\n            Integer attackScore,\r\n            Integer defenceScore,\r\n            Integer specialAttackScore,\r\n            Integer speed,\r\n            Integer generation,\r\n            Boolean legendary,\r\n            Boolean isActive\r\n    ) {\r\n        List<Pokemon> pokemonList = repository.findAll(); // select * from pokemon;\r\n\r\n        // método 1 - construir o objeto\r\n        Pokemon pokemon1 = new Pokemon();\r\n        pokemon1.setNumber(number);\r\n        pokemon1.setName(name);\r\n        pokemon1.setHpScore(hpScore);\r\n        pokemon1.setAttackScore(attackScore);\r\n        pokemon1.setDefenceScore(defenceScore);\r\n        pokemon1.setSpecialAttackScore(specialAttackScore);\r\n        pokemon1.setSpeed(speed);\r\n        pokemon1.setGeneration(generation);\r\n        pokemon1.setLegendary(legendary);\r\n        pokemon1.setIsActive(isActive);\r\n\r\n        repository.save(pokemon1);\r\n\r\n        // método 2 - construir o objeto c/ o que vem da bd + a alteração\r\n        Pokemon pokemon = repository.findPokemonByName(name);\r\n        repository.save(pokemon);\r\n    }\r\n\r\n    public List<Pokemon> listAllPokemons() {\r\n        return repository.findAll();\r\n    }\r\n\r\n    public Pokemon getPokemonById(Long id) {\r\n        return repository.findPokemonByIdPokemon(id);\r\n    }\r\n    public void editPokemon(Long id, Pokemon updatedPokemon) throws NoSuchElementException {\r\n        Optional<Pokemon> optionalPokemon = repository.findById(id);\r\n\r\n        if (optionalPokemon.isPresent()) {\r\n            Pokemon existingPokemon = optionalPokemon.get();\r\n\r\n            // Atualizar os campos necessários\r\n            existingPokemon.setName(updatedPokemon.getName());\r\n            existingPokemon.setHpScore(updatedPokemon.getHpScore());\r\n            existingPokemon.setAttackScore(updatedPokemon.getAttackScore());\r\n            existingPokemon.setSpecialDefenceScore(updatedPokemon.getSpecialDefenceScore());\r\n            existingPokemon.setSpecialAttackScore(updatedPokemon.getSpecialAttackScore());\r\n            existingPokemon.setSpeed(updatedPokemon.getSpeed());\r\n            existingPokemon.setGeneration(updatedPokemon.getGeneration());\r\n            existingPokemon.setLegendary(updatedPokemon.getLegendary());\r\n\r\n            repository.save(existingPokemon); // Salvar as alterações no banco de dados\r\n        } else {\r\n            throw new NoSuchElementException(\"Pokemon with ID \" + id + \" not found.\");\r\n        }\r\n    }\r\n\r\n    public List<Object[]> getPokemonTypesById(Long id) {\r\n        return repository.findPokemonTypesById(id);\r\n    }\r\n\r\n    public Pokemon getRepositoryPokemonInfoByName(String name) {\r\n        return repository.findPokemonByName(name);\r\n    }\r\n\r\n    public List<Type> getAllTypes() {\r\n        return repository.findAllTypes();\r\n    }\r\n\r\n    List<Type> findPokemonTypesById(Long id) {\r\n        return null;\r\n    }\r\n\r\n    public List<Type> getPokemonType(Long id) {\r\n        return repository.findTypesByPokemonId(id);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pokemonwebapp/src/main/java/com/ips/tpsi/pokemonwebapp/bc/WebBc.java b/pokemonwebapp/src/main/java/com/ips/tpsi/pokemonwebapp/bc/WebBc.java
+--- a/pokemonwebapp/src/main/java/com/ips/tpsi/pokemonwebapp/bc/WebBc.java	(revision f5eecb3ed5deffd050657184bc0844444e1dde5a)
++++ b/pokemonwebapp/src/main/java/com/ips/tpsi/pokemonwebapp/bc/WebBc.java	(date 1705243296947)
+@@ -58,8 +58,13 @@
+         repository.save(pokemon);
+     }
+ 
++    public List<Pokemon> listActivePokemons() {
++        return repository.findAll().stream()
++                .filter(Pokemon::getIsActive)
++                .collect(Collectors.toList());
++    }
+     public List<Pokemon> listAllPokemons() {
+-        return repository.findAll();
++        return listActivePokemons();
+     }
+ 
+     public Pokemon getPokemonById(Long id) {
+Index: pokemonwebapp/src/main/resources/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>spring.datasource.url=jdbc:mysql://${MYSQL_HOST:localhost}:3306/pokemonproject\r\nspring.datasource.username=root\r\nspring.datasource.password=Brunoebia11\r\nspring.jpa.hibernate.ddl-auto=update\r\nspring.jpa.show.sql=true
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/pokemonwebapp/src/main/resources/application.properties b/pokemonwebapp/src/main/resources/application.properties
+--- a/pokemonwebapp/src/main/resources/application.properties	(revision f5eecb3ed5deffd050657184bc0844444e1dde5a)
++++ b/pokemonwebapp/src/main/resources/application.properties	(date 1705241859829)
+@@ -1,5 +1,5 @@
+ spring.datasource.url=jdbc:mysql://${MYSQL_HOST:localhost}:3306/pokemonproject
+ spring.datasource.username=root
+-spring.datasource.password=Brunoebia11
++spring.datasource.password=cebolaS.1
+ spring.jpa.hibernate.ddl-auto=update
+ spring.jpa.show.sql=true
+\ No newline at end of file
+Index: pokemonwebapp/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>HELP.md\r\ntarget/\r\n!.mvn/wrapper/maven-wrapper.jar\r\n!**/src/main/**/target/\r\n!**/src/test/**/target/\r\n\r\n### STS ###\r\n.apt_generated\r\n.classpath\r\n.factorypath\r\n.project\r\n.settings\r\n.springBeans\r\n.sts4-cache\r\n\r\n### IntelliJ IDEA ###\r\n.idea\r\n*.iws\r\n*.iml\r\n*.ipr\r\n\r\n### NetBeans ###\r\n/nbproject/private/\r\n/nbbuild/\r\n/dist/\r\n/nbdist/\r\n/.nb-gradle/\r\nbuild/\r\n!**/src/main/**/build/\r\n!**/src/test/**/build/\r\n\r\n### VS Code ###\r\n.vscode/\r\n\r\n\r\n#####\r\n\r\napplication.properties\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pokemonwebapp/.gitignore b/pokemonwebapp/.gitignore
+--- a/pokemonwebapp/.gitignore	(revision f5eecb3ed5deffd050657184bc0844444e1dde5a)
++++ b/pokemonwebapp/.gitignore	(date 1705241886765)
+@@ -32,7 +32,3 @@
+ ### VS Code ###
+ .vscode/
+ 
+-
+-#####
+-
+-application.properties

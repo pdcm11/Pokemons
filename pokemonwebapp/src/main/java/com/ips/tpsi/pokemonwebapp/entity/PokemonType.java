@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Pokemon_Type {
+public class PokemonType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,5 +29,6 @@ public class Pokemon_Type {
     @ManyToOne
     @JoinColumn(name = "type_id", referencedColumnName = "id_type")
     private Type type;
+
 
 }

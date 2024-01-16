@@ -1,7 +1,8 @@
 package com.ips.tpsi.pokemonwebapp.controller;
-import com.ips.tpsi.pokemonwebapp.entity.Pokemon_Type;
+import com.ips.tpsi.pokemonwebapp.entity.PokemonType;
 import com.ips.tpsi.pokemonwebapp.entity.Type;
 import com.ips.tpsi.pokemonwebapp.repository.PokemonRepository;
+import org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator;
 import org.springframework.ui.Model;
 import com.ips.tpsi.pokemonwebapp.bc.WebBc;
 import com.ips.tpsi.pokemonwebapp.entity.Pokemon;
@@ -125,7 +126,9 @@ public class WebController {
             Pokemon existingPokemon = bc.getPokemonById(id);
 
             // Atualize os tipos associados ao Pokémon
-            Set<Pokemon_Type> updatedTypes = new HashSet<>();
+            Set<PokemonType> updatedTypes = new HashSet<>();
+            Long selectedtTypeId = null;
+
 
             // Verifique se há tipos selecionados
             if (updatedPokemon.getSelectedTypeIds() != null) {
@@ -133,23 +136,27 @@ public class WebController {
                 for (Long typeId : updatedPokemon.getSelectedTypeIds()) {
                     Type type = new Type();
                     type.setIdType(typeId);
-
-                    Pokemon_Type pokemonType = new Pokemon_Type();
+                    selectedtTypeId = typeId;
+                    PokemonType pokemonType = new PokemonType();
                     pokemonType.setPokemon(existingPokemon);
                     pokemonType.setType(type);
-                    pokemonType.setPokemonTypeLevel(updatedPokemon.getPokemonTypes()
-                            .stream()
-                            .filter(pt -> pt.getType().getIdType().equals(typeId))
-                            .findFirst()
-                            .orElseThrow(NoSuchElementException::new)
-                            .getPokemonTypeLevel());
+                    pokemonType.setPokemonTypeLevel(1); //TODO
 
                     updatedTypes.add(pokemonType);
                 }
             }
 
-            existingPokemon.setPokemonTypes(updatedTypes);
+            // existingPokemon.setPokemonTypes(updatedTypes);
             bc.editPokemon(id, existingPokemon);
+            if(selectedtTypeId!=null){
+                PokemonType pokemonType = new PokemonType();
+                pokemonType.setPokemon(existingPokemon);
+                pokemonType.setIdPokemonType(selectedtTypeId);
+                bc.editPokemonType(pokemonType);
+            }
+
+
+
 
             return "redirect:/listAllPokemons";
 

@@ -12,6 +12,10 @@
   </style>
 </head>
 <body>
+<div class="banner">
+    <img th:src="@{/img/Pokemon-logo.png}" alt="Logo" style="width: 200px;">
+    <h1><b>APP</b></h1>
+</div>
 
 <header>
   <h2>Edit Pokémon Types</h2>
@@ -24,16 +28,15 @@
     <p>Name: <span th:text="${pokemon.name}"></span></p>
   </section>
 
-  <section>
+ <section>
     <form th:object="${pokemon}" th:action="@{'/pokemon/' + ${pokemon.idPokemon} + '/edit/types'}" th:method="post">
       <h3>Edit Types:</h3>
-
-      <div th:each="pokemonType, iterStat : *{pokemonTypes}">
+      <!-- <div th:each="pokemonType, iterStat : ${pokemonTypes}">
         <div>
           <label th:for="${'pokemonTypes[' + iterStat.index + '].type.idType'}">Type:</label>
           <select th:id="${'pokemonTypes[' + iterStat.index + '].type.idType'}"
                   th:name="${'pokemonTypes[' + iterStat.index + '].type.idType'}"
-                  th:field="*{pokemonTypes[__${iterStat.index}__].type.idType}">
+                  th:field="${pokemonTypes[__${iterStat.index}__].type.idType}">
             <option th:each="type : ${allTypes}" th:value="${type.idType}" th:text="${type.name}"></option>
           </select>
         </div>
@@ -42,9 +45,16 @@
           <label th:for="${'pokemonTypes[' + iterStat.index + '].pokemonTypeLevel'}">Level:</label>
           <input th:id="${'pokemonTypes[' + iterStat.index + '].pokemonTypeLevel'}"
                  th:name="${'pokemonTypes[' + iterStat.index + '].pokemonTypeLevel'}"
-                 th:field="*{pokemonTypes[__${iterStat.index}__].pokemonTypeLevel}" type="text" />
+                 th:field="${pokemonTypes[__${iterStat.index}__].pokemonTypeLevel}" type="text" />
         </div>
-      </div>
+      </div>-->
+
+<label for="*{types}"><select id="*{types}" name="*{types}"  >
+        <option th:each="i : ${pokemonTypes}" th:value="${i.getName()}" th:text="${i.getName()}">
+
+        </option>
+      </select>
+      </label>
 
       <button class="btn btn-success" type="submit">Save</button>
     </form>

@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.33, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: pokemonproject
+-- Host: localhost    Database: pokemonproject
 -- ------------------------------------------------------
--- Server version	8.0.33
+-- Server version	8.0.32
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,28 +16,27 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `type`
+-- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `type`;
+DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `type` (
-  `id_type` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_type`),
-  UNIQUE KEY `id_type` (`id_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `user` (
+  `id_user` int NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id_user`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `type`
+-- Dumping data for table `user`
 --
 
-LOCK TABLES `type` WRITE;
-/*!40000 ALTER TABLE `type` DISABLE KEYS */;
-INSERT INTO `type` VALUES (1,'Bug'),(2,'Dark'),(3,'Dragon'),(4,'Electric'),(5,'Fairy'),(6,'Fighting'),(7,'Fire'),(8,'Flying'),(9,'Ghost'),(10,'Grass'),(11,'Ground'),(12,'Ice'),(13,'Normal'),(14,'Poison'),(15,'Psychic'),(16,'Rock'),(17,'Steel'),(18,'Water');
-/*!40000 ALTER TABLE `type` ENABLE KEYS */;
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-15 21:34:46
+-- Dump completed on 2024-01-16 21:39:09

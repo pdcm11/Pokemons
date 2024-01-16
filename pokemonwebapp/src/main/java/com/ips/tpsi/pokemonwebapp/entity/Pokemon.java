@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,13 +58,19 @@ public class Pokemon {
     private Boolean isActive;
 
     @OneToMany(mappedBy = "pokemon", cascade = CascadeType.ALL)
-    private List<Pokemon_Type> types;
+    private List<PokemonType> types;
 
     @Transient
     private List<Long> selectedTypeIds;
 
-    @OneToMany(mappedBy = "pokemon", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Pokemon_Type> pokemonTypes = new HashSet<>();
+    @Transient
+    private Type firstType;
+
+    @Transient
+    private Type secondType;
+
+ //   @OneToMany(mappedBy = "pokemon", cascade = CascadeType.ALL, orphanRemoval = true)
+  //  private Set<PokemonType> pokemonTypes = new HashSet<>();
 
 
 
