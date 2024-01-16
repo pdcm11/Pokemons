@@ -92,13 +92,13 @@ public class WebController {
     @GetMapping("/pokemon/{id}/edit/types")
     public String handleEditTypesForm(@PathVariable Long id, @ModelAttribute Pokemon updatedPokemon, Model model) {
         try {
-            // Obter a lista de todos os tipos disponíveis
+            // Obter a lista de todos os tipos registados na BD
             List<Type> allTypes = bc.getAllTypes();
 
-            // Obter a lista de tipos associados ao Pokémon
+            // Obter a lista dos tipos associados a um Pokémon
             List<Type> pokemonTypes = bc.getPokemonType(id);
 
-            // Preencher os IDs dos tipos associados ao Pokémon
+            // Preencher os IDs dos tipos associados a um Pokémon
             Set<Long> selectedTypeIds = pokemonTypes.stream()
                     .map(Type::getId)
                     .collect(Collectors.toSet());
@@ -112,11 +112,9 @@ public class WebController {
 
             return "editPokemonTypes";
 
-        } catch (Exception e) {
-            // Log do erro ou tratamento adequado
-            e.printStackTrace();
-            model.addAttribute("error", "Erro ao editar tipos de Pokémon.");
-            return "errorPage";
+        } catch (NoSuchElementException e) {
+            model.addAttribute("alertMessage", "Pokemon with ID " + id + " not found.");
+            return "editPokemonTypes";
         }
     }
 
@@ -150,25 +148,16 @@ public class WebController {
                 }
             }
 
-            // Atualize os tipos associados ao Pokémon no objeto existente
             existingPokemon.setPokemonTypes(updatedTypes);
-
-            // Salve as alterações
             bc.editPokemon(id, existingPokemon);
 
             return "redirect:/listAllPokemons";
+
         } catch (NoSuchElementException e) {
             model.addAttribute("alertMessage", "Pokemon with ID " + id + " not found.");
             return "editPokemonTypes";
-        } catch (Exception e) {
-            // Log do erro ou tratamento adequado
-            e.printStackTrace();
-            model.addAttribute("error", "Erro ao editar tipos de Pokémon.");
-            return "errorPage";
         }
     }
-
-
 
 
     @PostMapping("/pokemon/{id}/deactivate")
@@ -198,13 +187,20 @@ public class WebController {
         List<Pokemon> searchResults;
 
         if (searchName != null && !searchName.isEmpty()) {
-            searchResults = bc.searchPokemonByName(searchName);
+            // Filtrar apenas os Pokémons ativos pelo nome
+            searchResults = bc.searchPokemonByName(searchName)
+                    .stream()
+                    .filter(Pokemon::getIsActive)
+                    .collect(Collectors.toList());
         } else {
+            // Se o nome de pesquisa estiver vazio, listar todos os Pokémons ativos na mesma
             searchResults = bc.listActivePokemons();
         }
+
         model.addAttribute("pokemonList", searchResults);
         return "listPokemons";
     }
+
 
 
     @GetMapping("/home") // @GetMapping("/")

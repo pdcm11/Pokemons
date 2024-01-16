@@ -16,8 +16,6 @@ public interface PokemonRepository extends JpaRepository<Pokemon, Long> {
 
     Pokemon findPokemonByIdPokemon(Long idPokemon);
 
-    @Query("SELECT pt.pokemonTypeLevel, t.name FROM Pokemon_Type pt JOIN Type t ON pt.type.idType = t.idType WHERE pt.pokemon.idPokemon = :pokemonId")
-    List<Object[]> findPokemonTypesById(@Param("pokemonId") Long pokemonId);
 
     @Query("SELECT pt.type FROM Pokemon_Type pt WHERE pt.pokemon.idPokemon = :pokemonId")
     List<Type> findTypesByPokemonId(@Param("pokemonId") Long pokemonId);
